@@ -86,6 +86,10 @@ docker logs -f my-stk-server
 
 More detailed logs are written to /root/.config/supertuxkart/config-0.10/server_config.log, which are optionally mounted on the host for easy access as seen in the example docker-run command above. The can then easily be read with the editor of choice or via `cat /path_on_host/STK/logs/server_config.log`
 
+### Adding addon tracks
+
+Simply copy the addon tracks folder into into the addons/tracks/ that is mounted as seen in the docker run command. Those maps can for example be downloaded ingame and then copied into the addons/tracks folder. More info on [Install/Uninstall Addons](https://supertuxkart.net/Installing_Add-Ons)
+
 ### Accessing the network console
 
 If network-console is set to true in server_config.xml,you can access the interactive network console with the following command:
