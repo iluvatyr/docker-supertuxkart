@@ -2,7 +2,7 @@
 version: "3.0"
 services:
   supertuxkart-server:
-    image: iluvatyr/supertuxkart-docker:latest
+    image: iluvatyr/supertuxkart:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
