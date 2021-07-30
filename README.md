@@ -50,8 +50,6 @@ docker run --name my-stk-server \
            -v $(pwd)/path_on_host/STK/server_config.xml:/stk/server_config.xml \
            -v $(pwd)/path_on_host/STK/motd.txt:/stk/motd.txt \ #optional for supplying ingame message of the day
            -v $(pwd)/path_on_host/STK/help.txt:/stk/help.txt \ #optional for when ingame /help command is used
-           -v $(pwd)/path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log \ #optional
-           -v $(pwd)/path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log \ #optional
            -v $(pwd)/path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ \ #optional for adding addon tracks and karts into the folder.
            -v $(pwd)/path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ \ #optional 
            -v $(pwd)/path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ \ #optional 
@@ -85,7 +83,14 @@ You can see the live output of /root/.config/supertuxkart/config-0.10/stdout.log
 docker logs -f my-stk-server
 ```
 
-More detailed logs are written to /root/.config/supertuxkart/config-0.10/server_config.log, which are optionally mounted on the host for easy access as seen in the example docker-run command above. The can then easily be read with the editor of choice or via `cat /path_on_host/STK/logs/server_config.log`
+More detailed logs are written to /root/.config/supertuxkart/config-0.10/server_config.log inside the container.
+These can can optionally mounted on the host for easy access by adding this to the docker run command above:
+```
+           -v $(pwd)/path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log \ #optional
+           -v $(pwd)/path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log \ #optional
+```
+Make sure to create some empty file with the names on the host already because otherwise it will create a folder there.
+Then they can easily be read with the editor of choice.
 
 ### Adding addon tracks
 
