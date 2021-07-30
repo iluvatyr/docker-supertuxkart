@@ -10,8 +10,8 @@ services:
       - /path_on_host/STK/server_config.xml:/stk/server_config.xml
       - /path_on_host/STK/motd.txt:/stk/motd.txt #optional for supplying ingame message of the day
       - /path_on_host/STK/help.txt:/stk/help.txt #optional for when ingame /help command is used
-      - /path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log #optional (empty logfile has to be created manually before starting)
-      - /path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log #optional (empty logfile has to be created manually before starting)
+      - /path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log #optional (empty logfile has to be created manually on host before starting)
+      - /path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log #optional (empty logfile has to be created manually on host before starting)
       - /path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ #optional for adding addon tracks and karts into the folder.
       - /path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ #optional 
       - /path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ #optional 
