@@ -3,10 +3,9 @@
 # -----------
 
 FROM ubuntu:20.04 AS build
-LABEL maintainer=jwestp
+LABEL maintainer=Luva9497
 WORKDIR /stk
 
-# Set stk version that should be built
 ENV VERSION=1.1
 
 # Install build dependencies
@@ -21,16 +20,17 @@ RUN apt-get update && \
                        pkg-config \
                        subversion \
                        zlib1g-dev \
-                       ca-certificates
+                       ca-certificates \
+		               tzdata
 
 # Get code and assets
-RUN git clone --branch ${VERSION} --depth=1 https://github.com/supertuxkart/stk-code.git
+RUN git clone --branch master --depth=1 https://github.com/kimden/stk-code 
 RUN svn checkout https://svn.code.sf.net/p/supertuxkart/code/stk-assets-release/${VERSION}/ stk-assets
 
 # Build server
 RUN mkdir stk-code/cmake_build && \
     cd stk-code/cmake_build && \
-    cmake .. -DSERVER_ONLY=ON -USE_SYSTEM_ENET=ON && \
+    cmake .. -DSERVER_ONLY=ON -USE_SQLITE3=ON -USE_SYSTEM_ENET=ON && \
     make -j$(nproc) && \
     make install
 
@@ -39,7 +39,7 @@ RUN mkdir stk-code/cmake_build && \
 # -----------
 
 FROM ubuntu:20.04
-LABEL maintainer=jwestp
+LABEL maintainer=iluvatyr
 WORKDIR /stk
 
 # Install libcurl dependency
@@ -53,7 +53,7 @@ COPY --from=build /usr/local/share/supertuxkart /usr/local/share/supertuxkart
 COPY docker-entrypoint.sh docker-entrypoint.sh
 
 # Expose the ports used to find and connect to the server
-EXPOSE 2757
 EXPOSE 2759
+EXPOSE 2757
 
 ENTRYPOINT ["/stk/docker-entrypoint.sh"]
