@@ -20,8 +20,24 @@ The image exposes ports 2759 (server) and 2757 (server discovery), although only
 
 ### Hosting a public server on the internet (wan-server)
 
-For hosting a server on the internet (by setting `wan-server` to `true` in the config file) it is required to log in with your STK account. You can register a free account [here](https://online.supertuxkart.net/register.php). Pass your username and password to the container via environment variables. Also make sure to change the paths for the volumes on the host for the configuration data and the logs.
+For hosting a server on the internet (by setting `wan-server` to `true` in the config file) it is required to log in with your STK account. You can register a free account [here](https://online.supertuxkart.net/register.php). Pass your username and password to the container via environment variables. Also make sure to change the volume paths on the host for the configuration data. Delete all lines specifying #optional if not needed.
 
+Minimal docker run:
+
+
+```
+docker run --name my-stk-server \
+           -d \
+           -p 2757:2757 \
+           -p 2759:2759 \
+           -v $(pwd)/path_on_host/STK/server_config.xml:/stk/server_config.xml \
+           -e USERNAME=myusername \
+           -e PASSWORD=mypassword \
+           -e AI_KARTS=0 \
+           iluvatyr/supertuxkart:latest
+```
+
+Full docker run:
 ```
 docker run --name my-stk-server \
            -d \
@@ -81,5 +97,4 @@ docker exec -it my-stk-server supertuxkart --connect-now=127.0.0.1:2759 --server
 
 ### Using docker-compose
 
-Clone this repository and have a look into the `docker-compose.yml` to edit your credentials (username & password). If you want to run a public server without needing a password, you can remove the `environment` section with its corresponding entries.
-After editing, you can get the server up and running by doing a `docker-compose up -d`. Have a look at the logs by using `docker-compose logs` This can be especially useful when searching for bugs.
+Clone this repository and have a look into the `docker-compose.yml` to edit your credentials (username & password) and paths to volumes. Delete all optional volumes if not used. After editing, you can get the server up and running by doing a `docker-compose up -d`. Have a look at the logs by using `docker-compose logs` This can be especially useful when searching for bugs.
