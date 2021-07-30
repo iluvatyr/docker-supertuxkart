@@ -9,7 +9,12 @@ SuperTuxKart (STK) is a free and open-source kart racing game, distributed under
 SuperTuxKart started as a fork of TuxKart, originally developed by Steve and Oliver Baker in 2000. When TuxKart's development ended around March 2004, a fork as SuperTuxKart was conducted by other developers in 2006. SuperTuxKart is under active development by the game's community.
 
 > [wikipedia.org/wiki/SuperTuxKart](https://en.wikipedia.org/wiki/SuperTuxKart)
+
+Another wiki for supertuxkart is also provided by Kimden here:
 > [Supertuxkart Wiki by Kimden](https://stk.kimden.online/wiki/index.php?title=Main_Page)
+
+For a helpful list of commands you can use as a server admin ingame, you can refer to his wiki page here:
+> [Supertuxkart Wiki by Kimden](https://stk.kimden.online/wiki/index.php?title=Frankfurt_servers)
 
 ![logo](https://raw.githubusercontent.com/jwestp/docker-supertuxkart/master/supertuxkart-logo.png)
 
