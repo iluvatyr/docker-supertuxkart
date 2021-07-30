@@ -45,7 +45,8 @@ Make sure that inside stk/server_config.xml  `<wan-server value="false" />` is s
 
 ### Adding ai karts
 
-You can add ai karts to your server by setting the environment variable `AI_KARTS=X`, with X being the number of AI-Karts you would like to add.\n
+You can add ai karts to your server by setting the environment variable `AI_KARTS=X`, with X being the number of AI-Karts you would like to add.
+
 Inside the server_config.xml, you can additionally specify if AI_Karts should be added/removed automatically depending on real players connected to the server with the following variable:
 <!-- If true this server will auto add / remove AI connected with network-ai=x, which will kick N - 1 bot(s) where N is the number of human players. Only use this for non-GP racing server. -->
 `<ai-handling value="true" />`
