@@ -89,7 +89,7 @@ These can can optionally mounted on the host for easy access by adding this to t
            -v $(pwd)/path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log \ #optional
            -v $(pwd)/path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log \ #optional
 ```
-Make sure to create some empty file with the names on the host already because otherwise it will create a folder there.
+Make sure to create some empty file with the names on the host already because otherwise it will create a folder there on container startup.
 Then they can easily be read with the editor of choice.
 
 ### Adding addon tracks
