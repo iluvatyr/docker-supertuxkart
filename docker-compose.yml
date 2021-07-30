@@ -1,14 +1,26 @@
+---
 version: "3.0"
 services:
   supertuxkart-server:
-    image: jwestp/supertuxkart:latest
+    image: iluvatyr/supertuxkart-docker:latest
     restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
     volumes:
-      - "./server_config.xml:/stk/server_config.xml"
+      - /path_on_host/STK/server_config.xml:/stk/server_config.xml
+      - /path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log #optional
+      - /path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log #optional
+      - /path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ #optional for adding addon tracks and karts into the folder.
+      - /path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ #optional 
+      - /path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ #optional 
+      - /path_on_host/STK/screenshots/:/root/.local/share/supertuxkart/screenshots/ #optional
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      USERNAME: myusername
-      PASSWORD: mypassword
-      AI_KARTS: 2
+      - USERNAME: icebear420
+      - PASSWORD: legolas1
+      - TZ: Europe/London
+      - AI_KARTS: 0
     ports:
-      - "2757:2757"
-      - "2759:2759"
+      - "2759:2759/udp"
+      - "2757:2757/udp"
