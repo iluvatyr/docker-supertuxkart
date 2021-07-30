@@ -19,8 +19,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - USERNAME: icebear420
-      - PASSWORD: legolas1
+      - USERNAME: myusername
+      - PASSWORD: mypassword
       - TZ: Europe/London
       - AI_KARTS: 0
     ports:
