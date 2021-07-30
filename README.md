@@ -13,8 +13,8 @@ SuperTuxKart started as a fork of TuxKart, originally developed by Steve and Oli
 Another wiki for SuperTuxKart is also provided by [kimden](https://github.com/kimden/) here:
 > [Supertuxkart Wiki by Kimden](https://stk.kimden.online/wiki/index.php?title=Main_Page)
 
-For a helpful list of commands you can use as a server admin ingame, you can refer to his wiki page here:
-> [Supertuxkart Wiki by Kimden](https://stk.kimden.online/wiki/index.php?title=Frankfurt_servers)
+For a helpful, but incomplete list of commands you can use as a server admin ingame, you can refer to his wiki page here:
+> [Ingame server commands](https://stk.kimden.online/wiki/index.php?title=Frankfurt_servers)
 
 ![logo](https://raw.githubusercontent.com/jwestp/docker-supertuxkart/master/supertuxkart-logo.png)
 
