@@ -49,6 +49,8 @@ docker run --name my-stk-server \
            -p 2757:2757 \
            -p 2759:2759 \
            -v $(pwd)/path_on_host/STK/server_config.xml:/stk/server_config.xml \
+           -v $(pwd)/path_on_host/STK/motd.txt:/stk/motd.txt \ #optional for supplying ingame message of the day
+           -v $(pwd)/path_on_host/STK/motd.txt:/stk/help.txt \ #optional for when ingame /help command is used
            -v $(pwd)/path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log \ #optional
            -v $(pwd)/path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log \ #optional
            -v $(pwd)/path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ \ #optional for adding addon tracks and karts into the folder.
