@@ -1,6 +1,6 @@
 # Docker SuperTuxKart Server
 
-This is a docker image for deploying a [SuperTuxKart](https://supertuxkart.net) server. It uses a modified version of stk-code from [kimden/stk-code](https://github.com/kimden/stk-code) instead of [supertuxkart/stk-code](https://github.com/supertuxkart/stk-code.git) It adds a few more functionalities and is fully compatible with the standard stk-code. A lot Supertuxkart-servers run with this server version. 
+This is a docker image for deploying a [SuperTuxKart](https://supertuxkart.net) server. It uses a modified version of stk-code from [kimden/stk-code](https://github.com/kimden/stk-code) instead of [supertuxkart/stk-code](https://github.com/supertuxkart/stk-code.git) for building the image. This adds a few more functionalities and is fully compatible with the standard stk-code. A lot Supertuxkart-servers run with this server version. 
 
 ## What is SuperTuxKart?
 
