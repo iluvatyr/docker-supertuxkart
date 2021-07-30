@@ -59,7 +59,7 @@ You can see the live output of /root/.config/supertuxkart/config-0.10/stdout.log
 docker logs -f my-stk-server
 ```
 
-More detailed logs are written to /root/.config/supertuxkart/config-0.10/server_config.log, which are optionally mounted as seen in the example docker-run command above.
+More detailed logs are written to /root/.config/supertuxkart/config-0.10/server_config.log, which are optionally mounted on the host for easy access as seen in the example docker-run command above. The can then easily be read with the editor of choice or via `cat /path_on_host/STK/logs/server_config.log`
 
 ### Accessing the network console
 
