@@ -36,9 +36,8 @@ docker run --name my-stk-server \
            -p 2757:2757 \
            -p 2759:2759 \
            -v $(pwd)/path_on_host/STK/server_config.xml:/stk/server_config.xml \
-           -e USERNAME=myusername \
-           -e PASSWORD=mypassword \
-           -e AI_KARTS=0 \
+           -e USERNAME=myusername \ #remove if only LAN-server
+           -e PASSWORD=mypassword \ #remove if only LAN-server
            iluvatyr/supertuxkart:latest
 ```
 
