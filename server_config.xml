@@ -86,10 +86,10 @@
     <addon_soccers_threshold value="0" />
 
     <!-- Tracks needed to enter the server, leave empty for no restriction. -->
-    <must-have-tracks value="hacienda xr591 addon_animtrack_1 minigolf" />
+    <must-have-tracks value="" />
 
     <!-- List of tracks that can be played on a server, leave empty for no restriction or put 'not' before the list to name tracks that cannot be played. -->
-    <only-played-tracks value="not abyss snowtuxpeak addon_minigolf" />
+    <only-played-tracks value="" />
 
     <!-- Use fixed lap count, negative or zero to disable. -->
     <fixed-lap-count value="-1" />
