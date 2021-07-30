@@ -27,13 +27,17 @@ docker run --name my-stk-server \
            -d \
            -p 2757:2757 \
            -p 2759:2759 \
-           -v $(pwd)path_on_host/STK/server_config.xml:/stk/server_config.xml \
-           -v $(pwd)path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log \ (optional)
-           -v $(pwd)path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log \ (optional)
+           -v $(pwd)/path_on_host/STK/server_config.xml:/stk/server_config.xml \
+           -v $(pwd)/path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log \ #optional
+           -v $(pwd)/path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log \ #optional
+           -v $(pwd)/path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ \ #optional for adding addon tracks and karts into the folder.
+           -v $(pwd)/path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ \ #optional 
+           -v $(pwd)/path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ \ #optional 
+           -v $(pwd)/path_on_host/STK/screenshots/:/root/.local/share/supertuxkart/screenshots/ \ #optional
            -e USERNAME=myusername \
            -e PASSWORD=mypassword \
            -e AI_KARTS=0 \
-           jwestp/supertuxkart:latest
+           iluvatyr/supertuxkart:latest
 ```
 
 Make sure that inside stk/server_config.xml  `<wan-server value="true" />` is set as you see here.
