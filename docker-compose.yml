@@ -19,10 +19,10 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - USERNAME: myusername
-      - PASSWORD: mypassword
-      - TZ: Europe/London
-      - AI_KARTS: 0
+      - USERNAME=myusername
+      - PASSWORD=mypassword
+      - TZ=Europe/London
+      - AI_KARTS=0
     ports:
       - "2759:2759/udp"
       - "2757:2757/udp"
