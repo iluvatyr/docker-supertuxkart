@@ -1,13 +1,3 @@
-# -----------
-# Build stage
-# -----------
-
-FROM ubuntu:20.04 AS build
-LABEL maintainer=Luva9497
-WORKDIR /stk
-
-ENV VERSION=1.1
-
 # Install build dependencies
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
@@ -21,10 +11,12 @@ RUN apt-get update && \
                        subversion \
                        zlib1g-dev \
                        ca-certificates \
-		               tzdata
+                       libsqlite3-dev \
+                       libsqlite3-0 \
+                       tzdata
 
 # Get code and assets
-RUN git clone --branch master --depth=1 https://github.com/kimden/stk-code 
+RUN git clone --branch master --depth=1 https://github.com/kimden/stk-code
 RUN svn checkout https://svn.code.sf.net/p/supertuxkart/code/stk-assets-release/${VERSION}/ stk-assets
 
 # Build server
