@@ -26,7 +26,7 @@ RUN apt-get update && \
                        tzdata
 
 # Get code and assets
-RUN git clone --branch master --depth=1 https://github.com/kimden/stk-code
+RUN git clone --branch master --depth=1 https://github.com/kimden/stk-code.git
 RUN svn checkout https://svn.code.sf.net/p/supertuxkart/code/stk-assets-release/${VERSION}/ stk-assets
 
 # Build server
