@@ -17,5 +17,10 @@ then
     supertuxkart --connect-now=127.0.0.1:2759 --server-password=$SERVER_PASSWORD --network-ai=${AI_KARTS} &
 fi
 
+#Add support for installing all addons after server startup
+if [ -n "$INSTALL_ADDONS" ]; then
+    /app/install-all-addons.sh
+fi
+
 # Bring server process back into foreground
 fg %1
