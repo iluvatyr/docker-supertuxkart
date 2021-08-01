@@ -8,7 +8,7 @@ then
 fi
 
 # Start stk server in background
-supertuxkart --server-config=server_config.xml --no-graphics &
+supertuxkart --server-config=server_config.xml &
 
 # Add ai kart background process if necessary
 if [[ -n ${AI_KARTS} ]]
