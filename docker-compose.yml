@@ -22,7 +22,8 @@ services:
       - USERNAME=myusername
       - PASSWORD=mypassword
       - TZ=Europe/London
-      - AI_KARTS=0
+      - AI_KARTS=0 #How many AI-Karts are wanted
+      - INSTALL_ADDONS=0  # Install all addons after starting by changing to 1
     ports:
       - "2759:2759/udp"
       - "2757:2757/udp"
