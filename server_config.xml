@@ -203,7 +203,7 @@
     <store-results value="false" />
 
     <!-- When non-empty, server is telling whether a player has beaten a server record, records are taken from the table specified in this field. So it can be the results table for this server or for all servers hosted on the machine.-->
-    <records-table-name value="" />
+    <records-table-name value="v1_server_config_results" />
 
     <!-- When true, stores the info about each forced kick in a database (if it exists). -->
     <track-kicks value="false" />
@@ -227,7 +227,7 @@
     <tracks-queue value="" />
 
     <!-- A custom Grand Prix scoring system to be used, empty for default. -->
-    <grand-prix-scoring value="" />
+    <grand-prix-scoring value="fixed 0 1 10 8 6 5 4 3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0" />
 
     <!-- For a private server, a list of players who can enter with any password. Works only for online accounts. -->
     <white-list value="kimden" />
