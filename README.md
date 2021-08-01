@@ -54,15 +54,16 @@ docker run --name my-stk-server \
            -p 2757:2757 \
            -p 2759:2759 \
            -v $(pwd)/path_on_host/STK/server_config.xml:/stk/server_config.xml \
-           -v $(pwd)/path_on_host/STK/motd.txt:/stk/motd.txt \ #optional for supplying ingame message of the day
-           -v $(pwd)/path_on_host/STK/help.txt:/stk/help.txt \ #optional for when ingame /help command is used
-           -v $(pwd)/path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ \ #optional for adding addon tracks and karts into the folder.
-           -v $(pwd)/path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ \ #optional 
-           -v $(pwd)/path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ \ #optional 
-           -v $(pwd)/path_on_host/STK/screenshots/:/root/.local/share/supertuxkart/screenshots/ \ #optional
+           #-v $(pwd)/path_on_host/STK/motd.txt:/stk/motd.txt \ #optional for supplying ingame message of the day
+           #-v $(pwd)/path_on_host/STK/help.txt:/stk/help.txt \ #optional for when ingame /help command is used
+           #-v $(pwd)/path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ \ #optional for adding addon tracks and karts into the folder.
+           #-v $(pwd)/path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ \ #optional 
+           #-v $(pwd)/path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ \ #optional 
+           #-v $(pwd)/path_on_host/STK/screenshots/:/root/.local/share/supertuxkart/screenshots/ \ #optional
            -e USERNAME=myusername \
            -e PASSWORD=mypassword \
-           -e AI_KARTS=0 \
+           #-e AI_KARTS=0 \
+           #-e INSTALL_ADDONS=1 \ # Install all addons after starting
            iluvatyr/supertuxkart:latest
 ```
 
