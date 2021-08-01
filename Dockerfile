@@ -9,7 +9,7 @@ WORKDIR /stk
 ENV VERSION=1.1
 
 # Install build dependencies
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install --no-install-recommends -y build-essential \
                        cmake \
@@ -45,8 +45,11 @@ LABEL maintainer=iluvatyr
 WORKDIR /stk
 
 # Install libcurl dependency
+
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y libcurl4-openssl-dev && \
+    apt-get install --no-install-recommends -y libcurl4-openssl-dev \
+                       tzdata && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy artifacts from build stage
