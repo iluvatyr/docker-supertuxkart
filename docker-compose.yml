@@ -16,8 +16,7 @@ services:
       - /path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ #optional 
       - /path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ #optional 
       - /path_on_host/STK/screenshots/:/root/.local/share/supertuxkart/screenshots/ #optional
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+     # - /etc/timezone:/etc/timezone:ro #optional
     environment:
       - USERNAME=myusername
       - PASSWORD=mypassword
