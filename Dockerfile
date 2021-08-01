@@ -3,7 +3,7 @@
 # -----------
 
 FROM ubuntu:20.04 AS build
-LABEL maintainer=Luva9497
+LABEL maintainer=iluvatyr
 WORKDIR /stk
 
 ENV VERSION=1.1
