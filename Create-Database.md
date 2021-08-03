@@ -12,6 +12,7 @@ sqlite3 stkservers.db
     <sql-management value="true" />
  ```
 4) Change the table name for records table to "v1_server_config_results" (or something else if you named it differently) so that it looks like below
+   The naming structure of the records table is "v1_servername_results"  (servername = server_config if server_config.xml is your servers config.)
 
     ```
     <!-- When non-empty, server is telling whether a player has beaten a server record, records are taken from the table specified in this field. So it can be the results table for this server or for all servers hosted on the machine. -->
@@ -114,4 +115,31 @@ laps INTEGER NOT NULL, -- Number of laps
 result REAL NOT NULL -- Elapsed time for a race, possibly with autofinish 
 );
 
+```
+ 
+# In case you have multiple Supertuxkart servers and both store players records, create a second table for records like this:
+# Copy everything below (change the table name accordingly), cd into the folder with the database and paste it after following command:
+# sqlite3 stkservers.db
+ 
+```
+CREATE TABLE v1_server_config_2_results
+(
+time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Timestamp of the result
+username TEXT NOT NULL, -- User who set the result
+venue TEXT NOT NULL, -- Track for a race
+reverse TEXT NOT NULL, -- Direction
+mode TEXT NOT NULL, -- Racing mode
+laps INTEGER NOT NULL, -- Number of laps
+result REAL NOT NULL -- Elapsed time for a race, possibly with autofinish 
+);
+ ```
+ Then type ".quit" to exit the db.
+
+# If you want the servers to use results of both servers to say if someone beat a server record, create a view of both records tables like this and change the records table inside the server log to use the all_results view. It will still log to its own table, but take results from all_results.
+ 
+```
+CREATE VIEW all_results AS SELECT server_name, time, username, venue, reverse, mode, laps, result FROM (
+SELECT 'NAME1' AS server_name, time, username, venue, reverse, mode, laps, result FROM v1_server_config_results
+UNION SELECT 'NAME2' AS server_name, time, username, venue, reverse, mode, laps, result FROM v1_server_config_2_results
+) ORDER BY time DESC, result ASC
 ```
