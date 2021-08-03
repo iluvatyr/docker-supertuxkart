@@ -117,9 +117,11 @@ result REAL NOT NULL -- Elapsed time for a race, possibly with autofinish
 
 ```
  
-# In case you have multiple Supertuxkart servers and both store players records, create a second table for records like this:
-# Copy everything below (change the table name accordingly), cd into the folder with the database and paste it after following command:
-# sqlite3 stkservers.db
+# In case you have multiple Supertuxkart servers and both store players records:
+Create a second table for records like this:
+1) Copy everything below (change the table name accordingly), 
+2) cd into the folder with the database
+3) paste everything after entering the database using sqlite3 stkservers.db (or name of database you defined)
  
 ```
 CREATE TABLE v1_server_config_2_results
@@ -133,9 +135,19 @@ laps INTEGER NOT NULL, -- Number of laps
 result REAL NOT NULL -- Elapsed time for a race, possibly with autofinish 
 );
  ```
- Then type ".quit" to exit the db.
+Then type ".quit" to exit the db.
 
-# If you want the servers to use results of both servers to say if someone beat a server record, create a view of both records tables like this and change the records table inside the server log to use the all_results view. It will still log to its own table, but take results from all_results.
+# Make servers use combined results of more than one server:
+If you want the servers to use results of both servers to say if someone beat a server record, meaning someone could beat a server record in server1 and in server2 it would not be beaten also until it is faster than that record of server1. 
+1) Create a view of both records tables like shown below (using sqlite3 command again) 
+2) Make sure to change the name after "FROM" to the records table names you created before of the single servers.
+3) Inside the server_config.xml of each server, change the records table to use the all_results view. It will still log to its own table, but take results from all_results.
+It will look like this afterwards inside each servers config.xml
+ 
+ ```
+    <!-- When non-empty, server is telling whether a player has beaten a server record, records are taken from the table specified in this field. So it can be the results table for this server or for all servers hosted on the machine. -->
+    <records-table-name value="all_results" />
+ ```
  
 ```
 CREATE VIEW all_results AS SELECT server_name, time, username, venue, reverse, mode, laps, result FROM (
