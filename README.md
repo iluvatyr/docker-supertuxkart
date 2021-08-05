@@ -3,7 +3,7 @@
 This is a docker image for deploying a [SuperTuxKart](https://supertuxkart.net) server. It uses a modified version of stk-code from [kimden/stk-code](https://github.com/kimden/stk-code) instead of [supertuxkart/stk-code](https://github.com/supertuxkart/stk-code.git) for building the image. This adds a few more functionalities and is fully compatible with the standard stk-code. 
 
 A list of the [changes in kimden/stk-code](https://github.com/kimden/stk-code/blob/master/FORK_CHANGES.md) can be viewed by clicking the link. A lot Supertuxkart-servers run with this server version. 
-Most prominent changes in the docker image here compared to the one of jwestp are:
+This fork of jwestp/docker-supertuxkart has following changes:
 
 1) Support for sqlite3 database server management (turn on in server_config.xml, description how to set up the database in [Create-Database.md](https://github.com/iluvatyr/docker-supertuxkart/blob/master/Create-Database.md)
 2) Support for setting up the timezone with the Environment variable, e.g. TZ=Europe/London (otherwise logs show wrong time)
