@@ -8,6 +8,10 @@ mkdir -p "$TMP_DIR"
 echo "Downloading addon index..."
 curl -fLs https://online.supertuxkart.net/downloads/xml/assets.xml > "$TMP_DIR"/assets.xml
 
+#Removing Karts from assets.xml, comment out below 2 lines to also download karts
+grep -v "<kart id=" "$TMP_DIR"/assets.xml >"$TMP_DIR"/tmp.xml
+mv "$TMP_DIR"/tmp.xml "$TMP_DIR"/assets.xml
+
 TRACK_REGEX='^\s*<track'
 ARENA_REGEX='^\s*<arena'
 KART_REGEX='^\s*<kart'
@@ -18,6 +22,7 @@ DESIGNER_REGEX='designer="([^"]+)"'
 REVISION_REGEX='revision="([^"]+)"'
 
 while IFS='<' read -r line; do
+  echo -n "." #just to see that something is happening
   if [[ $line =~ $TRACK_REGEX ]]; then
     addon_subdir="tracks"
     type_name="Track"
@@ -38,7 +43,7 @@ while IFS='<' read -r line; do
   target_dir="$ADDONS_DIR/$addon_subdir/$id"
 
   if [[ ! -d "$target_dir" ]]; then
-    # Find highesr revision...
+    # Find highest revision...
     while IFS='<' read -r line; do
       [[ $line =~ $ID_REGEX ]]
       found_id="${BASH_REMATCH[1]}"
