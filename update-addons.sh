@@ -23,13 +23,8 @@ NAME_REGEX='name="([^"]+)"'
 DESIGNER_REGEX='designer="([^"]+)"'
 REVISION_REGEX='revision="([^"]+)"'
 
-
-counter=0 # Counter just to see if something happens.
 while IFS='<' read -r line; do
-  counter=$((counter+1))
-  if (( $counter % 10 == 0 )); then
-    echo "$counter/$lines"
-  fi
+  echo -n "." # See that program isnt stuck
   if [[ $line =~ $TRACK_REGEX ]]; then
     addon_subdir="tracks"
     type_name="Track"
@@ -78,12 +73,12 @@ while IFS='<' read -r line; do
   
     #Comparing installed revision with available revision and downloading if new available
     if [[ $revision > $installed_revision ]]; then
-    echo "Newer revision available for $type_name: '$name' by $designer"
-    echo -n "updating from revision $installed_revision to revision $revision ..."
-        curl -fLs "$file" > "$TMP_DIR"/track.zip
-        echo -en " done\n- extracting..."
-        unzip -qo "$TMP_DIR"/track.zip -d "$target_dir"
-        echo " done"
+      echo "Newer revision available for $type_name: '$name' by $designer"
+      echo -n "updating from revision $installed_revision to revision $revision ..."
+      curl -fLs "$file" > "$TMP_DIR"/track.zip
+      echo -en " done\n- extracting..."
+      unzip -qo "$TMP_DIR"/track.zip -d "$target_dir"
+      echo " done"
     fi
   fi
 done < "$TMP_DIR"/assets.xml #Iterating through tracks of downloaded assets.xml
