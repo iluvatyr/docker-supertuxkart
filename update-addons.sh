@@ -73,6 +73,7 @@ while IFS='<' read -r line; do
   
     #Comparing installed revision with available revision and downloading if new available
     if [[ $revision > $installed_revision ]]; then
+      echo ""
       echo "Newer revision available for $type_name: '$name' by $designer"
       echo -n "updating from revision $installed_revision to revision $revision ..."
       curl -fLs "$file" > "$TMP_DIR"/track.zip
