@@ -6,8 +6,6 @@ FROM ubuntu:20.04 AS build
 LABEL maintainer=iluvatyr
 WORKDIR /stk
 
-ENV VERSION=1.1
-
 # Install build dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
@@ -27,7 +25,7 @@ RUN apt-get update && \
 
 # Get code and assets
 RUN git clone --branch master --depth=1 https://github.com/kimden/stk-code.git
-RUN svn checkout https://svn.code.sf.net/p/supertuxkart/code/stk-assets-release/${VERSION}/ stk-assets
+RUN svn checkout https://svn.code.sf.net/p/supertuxkart/code/stk-assets/ stk-assets
 
 # Build server
 RUN mkdir stk-code/cmake_build && \
