@@ -162,5 +162,6 @@ UNION SELECT 'NAME2' AS server_name, time, username, venue, reverse, mode, laps,
  CREATE VIEW all_players AS SELECT server_name, connected_time, online_id, username, ip, ip_readable, country_code, os FROM (
     SELECT 'Server1' AS server_name, connected_time, online_id, username, ip, ((ip >> 24) & 255) ||'.'|| ((ip >> 16) & 255) ||'.'|| ((ip >>  8) & 255) ||'.'|| ((ip ) & 255) AS ip_readable, country_code, os FROM v1_server_config_stats
     UNION SELECT 'Server2' AS server_name, connected_time, online_id, username, ip, ((ip >> 24) & 255) ||'.'|| ((ip >> 16) & 255) ||'.'|| ((ip >>  8) & 255) ||'.'|| ((ip ) & 255) AS ip_readable, country_code, os FROM v1_server2_config_stats
+     UNION SELECT 'Server3' AS server_name, connected_time, online_id, username, ip, ((ip >> 24) & 255) ||'.'|| ((ip >> 16) & 255) ||'.'|| ((ip >>  8) & 255) ||'.'|| ((ip ) & 255) AS ip_readable, country_code, os FROM v1_server3_config_stats
 ) ORDER BY ip DESC;
  ```
