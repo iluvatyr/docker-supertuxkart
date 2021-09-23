@@ -153,5 +153,14 @@ It will look like this afterwards inside each servers config.xml
 CREATE VIEW all_results AS SELECT server_name, time, username, venue, reverse, mode, laps, result FROM (
 SELECT 'NAME1' AS server_name, time, username, venue, reverse, mode, laps, result FROM v1_server_config_results
 UNION SELECT 'NAME2' AS server_name, time, username, venue, reverse, mode, laps, result FROM v1_server_config_2_results
-) ORDER BY time DESC, result ASC
+) ORDER BY time DESC, result ASC;
 ```
+
+ 
+# Other Views that can be created:
+ ```
+ CREATE VIEW all_players AS SELECT server_name, connected_time, online_id, username, ip, ip_readable, country_code, os FROM (
+    SELECT 'Server1' AS server_name, connected_time, online_id, username, ip, ((ip >> 24) & 255) ||'.'|| ((ip >> 16) & 255) ||'.'|| ((ip >>  8) & 255) ||'.'|| ((ip ) & 255) AS ip_readable, country_code, os FROM v1_server_config_stats
+    UNION SELECT 'Server2' AS server_name, connected_time, online_id, username, ip, ((ip >> 24) & 255) ||'.'|| ((ip >> 16) & 255) ||'.'|| ((ip >>  8) & 255) ||'.'|| ((ip ) & 255) AS ip_readable, country_code, os FROM v1_server2_config_stats
+);
+ ```
