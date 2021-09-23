@@ -146,7 +146,7 @@ It will look like this afterwards inside each servers config.xml
  
 
     `<!-- When non-empty, server is telling whether a player has beaten a server record, records are taken from the table specified in this field. So it can be the results table for this server or for all servers hosted on the machine. -->`
-    <records-table-name value="all_results" />
+    `<records-table-name value="all_results" />`
  
 ```
 CREATE VIEW all_results AS SELECT server_name, time, username, venue, reverse, mode, laps, result FROM (
