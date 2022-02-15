@@ -1,14 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/bash
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-STK_DIR=/srv/Config/STK #(change to parent folder of addons)
-
-TMP_DIR="$STK_DIR"/tmp
-ADDONS_DIR="$STK_DIR"/addons
+STK_DIR="/path/to/parent_folder_of_addons #(structure is parentfolder/addons/tracks/"
+TMP_DIR="$STK_DIR/tmp"
+ADDONS_DIR="$STK_DIR/addons"
 
 mkdir -p "$TMP_DIR"
 
 echo "Downloading addon index..."
-curl -fLs https://online.supertuxkart.net/downloads/xml/assets.xml > "$TMP_DIR"/assets.xml
+curl -fLsS https://online.supertuxkart.net/downloads/xml/assets.xml > "$TMP_DIR"/assets.xml
 
 #Removing Karts from assets.xml
 grep -v "<kart id=" "$TMP_DIR"/assets.xml >"$TMP_DIR"/tmp.xml
@@ -83,5 +83,6 @@ while IFS='<' read -r line; do
     fi
   fi
 done < "$TMP_DIR"/assets.xml #Iterating through tracks of downloaded assets.xml
-
+rm -r "$TMP_DIR"
 echo "All tracks up to date"
+
