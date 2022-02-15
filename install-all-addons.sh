@@ -1,12 +1,14 @@
-#!/usr/bin/env bash
+#!/bin/bash
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-ADDONS_DIR="$HOME/.local/share/supertuxkart/addons/"
-TMP_DIR="/tmp/stk-addons-installer"
+STK_DIR="/path/to/parent_folder_of_addons #(structure is parentfolder/addons/tracks/"
+TMP_DIR="$STK_DIR/tmp"
+ADDONS_DIR="$STK_DIR/addons"
 
 mkdir -p "$TMP_DIR"
 
 echo "Downloading addon index..."
-curl -fLs https://online.supertuxkart.net/downloads/xml/assets.xml > "$TMP_DIR"/assets.xml
+curl -fLsS https://online.supertuxkart.net/downloads/xml/assets.xml > "$TMP_DIR"/assets.xml
 
 #Removing Karts from assets.xml, comment out below 2 lines to also download karts
 grep -v "<kart id=" "$TMP_DIR"/assets.xml >"$TMP_DIR"/tmp.xml
@@ -63,7 +65,7 @@ while IFS='<' read -r line; do
         designer="$found_designer"
       fi
     done < "$TMP_DIR"/assets.xml
-
+    echo ""
     echo "$type_name: '$name' by $designer (revision $revision)"
     echo -n '- downloading...'
     curl -fLs "$file" > "$TMP_DIR"/track.zip
@@ -73,5 +75,5 @@ while IFS='<' read -r line; do
     echo " done"
   fi
 done < "$TMP_DIR"/assets.xml
-
+rm -r "$TMP_DIR"
 echo "Installation done."
