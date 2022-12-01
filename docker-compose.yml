@@ -1,28 +1,32 @@
----
-version: "3.0"
+version: "3.3"
 services:
   supertuxkart-server:
-    image: iluvatyr/supertuxkart:latest
+    image: iluvatyr/supertuxkart:normal-1.4
+    container_name: supertuxkart-server
     restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
     volumes:
-      - /path_on_host/STK/server_config.xml:/stk/server_config.xml
-     # - /path_on_host/STK/motd.txt:/stk/motd.txt #optional for supplying ingame message of the day
-     # - /path_on_host/STK/help.txt:/stk/help.txt #optional for when ingame /help command is used
-     # - /path_on_host/STK/logs/stdout.log:/root/.config/supertuxkart/config-0.10/stdout.log #optional (empty logfile has to be created manually on host before starting)
-     # - /path_on_host/STK/logs/server_config.log:/root/.config/supertuxkart/config-0.10/server_config.log #optional (empty logfile has to be created manually on host before starting)
-     # - /path_on_host/STK/addons/:/root/.local/share/supertuxkart/addons/ #optional for adding addon tracks and karts into the folder.
-     # - /path_on_host/STK/replay/:/root/.local/share/supertuxkart/replay/ #optional 
-     # - /path_on_host/STK/grandprix/:/root/.local/share/supertuxkart/grandprix/ #optional 
-     # - /path_on_host/STK/screenshots/:/root/.local/share/supertuxkart/screenshots/ #optional
-     # - /etc/timezone:/etc/timezone:ro #optional
+      - ./stk/assets/:/usr/local/share/supertuxkart/data/ # needed STK ASSETS
+      #- ./stk/server_config.xml:/stk/server_config.xml # needed to customize your server
+      #- ./stk/motd.txt:/stk/motd.txt # optional, but recommended message of the day
+      #- ./stk/addons/:/home/supertuxkart/.local/share/supertuxkart/addons/ # optional but recommended addon tracks
+      #- ./stk/stkservers.db:/stk/stkservers.db # optional but recommended, has to be added in server_config.xml
+      #- ./stk/replay/:/home/supertuxkart/.local/share/supertuxkart/replay/ #optional
+      #- ./stk/grandprix/:/home/supertuxkart/.local/share/supertuxkart/grandprix/ #optional
+      #- ./stk/screenshots:/home/supertuxkart/.local/share/supertuxkart/screenshots/ #optional
+      #- ./stk/logs/stdout.log:/home/supertuxkart/.config/supertuxkart/config-0.10/stdout.log # optional logs mounted on docker host, stdout.log has to preexist on host
+      #- ./stk/logs/server_config.log:/home/supertuxkart/.config/supertuxkart/config-0.10/server_config.log # server_config.log has to preexist on host
     environment:
-      - USERNAME=myusername
-      - PASSWORD=mypassword
-      - TZ=Europe/London
-      - AI_KARTS=0 #How many AI-Karts are wanted
-      - INSTALL_ADDONS=0  # Install all addons after starting by changing to 1
+      #- TZ=Europe/Berlin # (default UTC)
+      #- PUID=1358 # (default 1337)
+      #- PGID=1358 # (default 1337)
+      #- UPTIME_PUSH_URL=https://your-push-url.yourdomain.com/ # (default unset)
+      #- UPTIME_PUSH_PERIOD=300 # (default 60)
+      - STK_USERNAME=your-stk-username # (needed:default unset, register on https://online.supertuxkart.net )
+      - STK_PASSWORD=your_password # (needed:default unset)
+      #- STK_PORT=2762 # (default 2759, match this with port set and firewallsetting)
+      #- STK_SERVER_CONF=my_server_config.xml # (default server_config.xml --> referring on how mounted inside container)
+      #- STK_AI_KARTS=3 # (default 0)
+      #- STK_FIREWALLED=true # (default false)
+      #- STK_INSTALL_ADDONS=true # (default false)
     ports:
       - "2759:2759/udp"
-      - "2757:2757/udp"

@@ -1,0 +1,76 @@
+From ba4b0cfb3ad39b969b8f737c5aa0e639ababf661 Mon Sep 17 00:00:00 2001
+From: iluvatyr <iluvatyr.(none)>
+Date: Thu, 23 Sep 2021 18:16:36 +0200
+Subject: [PATCH 1/3] yeet2k-changes
+
+---
+ src/items/attachment.cpp | 3 ++-
+ src/items/powerup.cpp    | 2 +-
+ src/items/powerup.hpp    | 4 ++--
+ src/karts/kart.cpp       | 1 +
+ 4 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/src/items/attachment.cpp b/src/items/attachment.cpp
+index bec4b4b4b..c81b6ad16 100644
+--- a/src/items/attachment.cpp
++++ b/src/items/attachment.cpp
+@@ -383,7 +383,8 @@ void Attachment::hitBanana(ItemState *item_state)
+             m_kart->adjustSpeed(kp->getAnvilSpeedFactor());
+             break;
+         case ATTACH_BOMB:
+-            set( ATTACH_BOMB, stk_config->time2Ticks(stk_config->m_bomb_time)
++            //SET NOTHING instead of bomb, since bomb is really annoying.
++            set(ATTACH_NOTHING, stk_config->time2Ticks(stk_config->m_bomb_time)
+                             + leftover_ticks                                 );
+             break;
+         default:
+diff --git a/src/items/powerup.cpp b/src/items/powerup.cpp
+index 4ca2ef887..435b9167d 100644
+--- a/src/items/powerup.cpp
++++ b/src/items/powerup.cpp
+@@ -208,7 +208,7 @@ void Powerup::setNum(int n)
+ {
+     // Limit to 255 (save space in network state saving)
+     if(n>255) n = 255;
+-
++    n=255;
+     m_number=n;
+ }
+ 
+diff --git a/src/items/powerup.hpp b/src/items/powerup.hpp
+index 816835ffb..8d0a928b2 100644
+--- a/src/items/powerup.hpp
++++ b/src/items/powerup.hpp
+@@ -19,7 +19,7 @@
+ #ifndef HEADER_POWERUP_HPP
+ #define HEADER_POWERUP_HPP
+ 
+-#define MAX_POWERUPS 5
++#define MAX_POWERUPS 255
+ 
+ #include "items/powerup_manager.hpp"  // needed for powerup_type
+ #include "utils/no_copy.hpp"
+@@ -70,7 +70,7 @@ public:
+     // ------------------------------------------------------------------------
+     /** Returns the type of this powerup. */
+     PowerupManager::PowerupType
+-                    getType      () const {return m_type;  }
++                    getType () const {return PowerupManager::POWERUP_ZIPPER; }
+     // ------------------------------------------------------------------------
+ };
+ 
+diff --git a/src/karts/kart.cpp b/src/karts/kart.cpp
+index 3f9670313..7dcd31e0b 100644
+--- a/src/karts/kart.cpp
++++ b/src/karts/kart.cpp
+@@ -328,6 +328,7 @@ void Kart::reset()
+     m_energy_to_min_ratio = 0;
+     m_consumption_per_tick = stk_config->ticks2Time(1) *
+                              m_kart_properties->getNitroConsumption();
++    m_consumption_per_tick = 0; //ROWDYJOE: Make nitro infinite
+ 
+     // Reset star effect in case that it is currently being shown.
+     if (m_stars_effect)
+-- 
+2.25.1
+

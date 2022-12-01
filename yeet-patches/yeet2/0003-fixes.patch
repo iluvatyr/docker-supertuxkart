@@ -1,0 +1,50 @@
+From 08ed77adbb1e72c3153f8208f628dae2720fc859 Mon Sep 17 00:00:00 2001
+From: iluvatyr <iluvatyr.(none)>
+Date: Thu, 23 Sep 2021 19:45:03 +0200
+Subject: [PATCH 3/3] fixes
+
+---
+ src/karts/kart.cpp  | 4 ++--
+ src/modes/world.cpp | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/karts/kart.cpp b/src/karts/kart.cpp
+index c853b378f..92b93ee5c 100644
+--- a/src/karts/kart.cpp
++++ b/src/karts/kart.cpp
+@@ -362,7 +362,7 @@ void Kart::reset()
+ 
+     unsetSquash();
+ 
+-    m_last_used_powerup    = PowerupManager::POWERUP_ZIPPER;
++    m_last_used_powerup    = PowerupManager::POWERUP_ZIPPER; // ROWDYJOE: Was POWERUP_NOTHING; we want to start
+     m_race_position        = m_initial_position;
+     m_finished_race        = false;
+     m_eliminated           = false;
+@@ -372,7 +372,7 @@ void Kart::reset()
+     m_invulnerable_ticks   = 0;
+     m_min_nitro_ticks      = 0;
+     m_energy_to_min_ratio  = 0;
+-    m_collected_energy     = getNitroMax();
++    m_collected_energy     = m_kart_properties->getNitroMax(); // ROWDYJOE: Was 0; start with max nitro
+     m_bounce_back_ticks    = 0;
+     m_brake_ticks          = 0;
+     m_ticks_last_crash     = 0;
+diff --git a/src/modes/world.cpp b/src/modes/world.cpp
+index 04fc148db..843418182 100644
+--- a/src/modes/world.cpp
++++ b/src/modes/world.cpp
+@@ -1468,8 +1468,8 @@ void World::eliminateKart(int kart_id, bool notify_of_elimination)
+  */
+ void World::getDefaultCollectibles(int *collectible_type, int *amount )
+ {
+-    *collectible_type = PowerupManager::POWERUP_NOTHING;
+-    *amount = 0;
++    *collectible_type = PowerupManager::POWERUP_ZIPPER; //ROWDYJOE: Make it so zippers are given at the beginning of each race; this was originally set to POWERUP_NOTHING
++    *amount = 255; //ROWDYJOE: Give the maximum amount by default; originally was 0.
+ }   // getDefaultCollectibles
+ 
+ //-----------------------------------------------------------------------------
+-- 
+2.25.1
+

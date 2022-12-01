@@ -1,0 +1,427 @@
+From fae4b7358ddb2d97aed6ac6427da7677883d79c5 Mon Sep 17 00:00:00 2001
+From: iluvatyr <iluvatyr.(none)>
+Date: Tue, 26 Apr 2022 22:04:50 +0200
+Subject: [PATCH] Yeet1 Changes, change powerup.xml, kart_characteristics.xml
+ and code
+
+---
+ data/kart_characteristics.xml | 85 +++++++++++++++++------------------
+ data/powerup.xml              | 46 +++++++++----------
+ src/items/powerup.cpp         |  3 ++
+ src/karts/kart.cpp            | 16 ++++++-
+ 4 files changed, 83 insertions(+), 67 deletions(-)
+
+diff --git a/data/kart_characteristics.xml b/data/kart_characteristics.xml
+index 4f37ba4a3..d299ceb87 100644
+--- a/data/kart_characteristics.xml
++++ b/data/kart_characteristics.xml
+@@ -1,4 +1,4 @@
+-<?xml version="1.0"?>
++﻿<?xml version="1.0"?>
+ <!-- Format
+     It is possible to give relative values (factors and more) for each property.
+ 
+@@ -97,7 +97,7 @@
+             max-speed-reverse-ratio is the percentage of max speed for reverse
+                 gear.
+           -->
+-        <engine power="950" max-speed="25" generic-max-speed="25" brake-factor="15"
++        <engine power="1200" max-speed="30" generic-max-speed="30" brake-factor="15"
+                 brake-time-increase="6" max-speed-reverse-ratio="0.65" />
+ 
+         <!-- Simulated gears
+@@ -145,6 +145,7 @@
+             visual-time: How long it takes for the visual skid to reach maximum.
+             revert-visual-time: how long it takes when stopping a skid to revert
+                 the visual skid and bring visuals and physics in sync again.
++            angular-velocity: Angular velocity to be used for the kart when skidding.
+             min-speed: Minimum speed a kart must have before it can skid. Must be
+                 >0, otherwise the kart can skid at the start of the race.
+             time-till-bonus: How long a kart needs to skid in order to get a bonus.
+@@ -166,11 +167,11 @@
+                 effect is that while you skid (say left) you can adjust the direction
+                 of the turn the kart is doing somewhat by steering to the left and right,
+                 but you will always keep on doing a left turn, just more or less. -->
+-        <skid increase="1.05" decrease="0.95" max="2.5" time-till-max="0.5"
+-              visual="1.25" visual-time="0.7" revert-visual-time="0.7"
+-              min-speed="10"  time-till-bonus="1.0 3.0"
+-              bonus-speed="4.5 6.5" bonus-time="3.0 4.0"
+-              bonus-force="250 350"
++        <skid increase="1.05" decrease="0.95" max="3.5" time-till-max="0.2"
++              visual="1.25" visual-time="0.5" revert-visual-time="0.5"
++              min-speed="1"  time-till-bonus=".5 .9"
++              bonus-speed="10.0 18.0" bonus-time="10.0 15.0"
++              bonus-force="800 900"
+               physical-jump-time="0" graphical-jump-time="0.4"
+               post-skid-rotate-factor="1"
+               reduce-turn-min="0.2" reduce-turn-max="0.8" enabled="true" />
+@@ -179,20 +180,18 @@
+             Distance between kart and camera.
+             forward-up-angle: Angle between camera and plane of kart (pitch)
+                 when the camera is pointing forward
+-            forward-smoothing: if true, use smoothing (forward-up-angle become relative to speed) when pointing forward
+             backward-up-angle: Angle between camera and plane of kart (pitch)
+                 when the camera is pointing backwards. This is usually
+                 larger than the forward-up-angle, since the kart itself
+                 otherwise obstricts too much of the view. -->
+-        <camera distance="1.0"
+-                forward-up-angle="0" forward-smoothing="true"
++        <camera distance="1.0" forward-up-angle="0" forward-smoothing="true"
+                 backward-up-angle="5" />
+ 
+         <!-- Jump animation
+             animation-time: only if the estimated time for a jump is larger
+                 than this value will the jump animation being
+                 shown. -->
+-       <jump animation-time="0.5" />
++       <jump animation-time="0.4" />
+ 
+         <!-- Leaning related parameters, i.e. slightly leaning the karts when
+              driving a fast curve.
+@@ -208,7 +207,7 @@
+             weight: The additional weight an anvil adds to a kart.
+             speed-factor: The additional slowdown caused by the anvil.
+             duration: The time an anvil is active. -->
+-        <anvil duration="2.0" weight="150"  speed-factor="0.2" />
++        <anvil duration="1.0" weight="100"  speed-factor="0.5" />
+ 
+         <!-- Parachute
+             friction: The friction factor when a parachute is attached.
+@@ -226,8 +225,8 @@
+                 detach parachute. E.g. at max-speed 50% of speed must be lost.
+             max-speed: A factor that decides the impact of rate of speed
+                 (distance between bounds) -->
+-        <parachute friction="5.0" duration="3" duration-other="2.5"
+-                   duration-rank-mult="1.5" duration-speed-mult="1.35"
++        <parachute friction="4.0" duration="0.6" duration-other="0.6"
++                   duration-rank-mult="1.25" duration-speed-mult="1"
+                    lbound-fraction="0.5" ubound-fraction="0.3" max-speed="30" />
+         <!-- Bubblegum
+             duration: How long the bubblegum lasts.
+@@ -235,8 +234,8 @@
+             torque: To rotate the kart somewhat.
+             fade-in-time: How quick the slowdown takes effect.
+             shield-duration: How long the bubblegum shield lasts -->
+-        <bubblegum duration="1" speed-fraction="0.3" torque="500" fade-in-time="0.01"
+-                   shield-duration="10.0" />
++        <bubblegum duration="0.5" speed-fraction="0.8" torque="600" fade-in-time="0.01"
++                   shield-duration="4.5" />
+ 
+         <!-- Zipper
+             duration: Time a zipper is active.
+@@ -246,7 +245,7 @@
+                 kart-specific maximum kart speed.
+             fade-out-time: determines how long it takes for a zipper
+                 to fade out (after 'time'). -->
+-        <zipper duration="3.5" force="250.0" speed-gain="4.5" max-speed-increase="15"
++        <zipper duration="4" force="100.0" speed-gain="8" max-speed-increase="15"
+                 fade-out-time="1.0" />
+ 
+         <!-- Swatter
+@@ -257,8 +256,8 @@
+             squash-duration: How long a kart will remain squashed.
+             squash-slowdown: Percentage of max speed that a kart is
+                 restricted to. -->
+-        <swatter duration="10" distance="9" squash-duration="5"
+-                 squash-slowdown="0.5" />
++        <swatter duration="5" distance="5" squash-duration="1.5"
++                 squash-slowdown="0.6" />
+ 
+         <!-- Plunger and rubber band handling
+             band-max-length: The maximum length of rubber band before it snaps.
+@@ -268,7 +267,7 @@
+                 in your face is removed. -->
+         <plunger band-max-length="50" band-force="1500" band-duration="1"
+                  band-speed-increase="7" band-fade-out-time="3"
+-                 in-face-time="4.5" />
++                 in-face-time="1.5" />
+ 
+ 
+         <!-- ********** Miscellaneous ********** -->
+@@ -279,7 +278,7 @@
+             fields must have the same size, and must be sorted by
+             increasing times. -->
+         <startup time="0.3 0.5"
+-                 boost="8 4" />
++                 boost="60 4" />
+ 
+         <!-- Rescue
+             duration: How long it takes the kart to be raised.
+@@ -289,7 +288,7 @@
+                 releasing them on the ground after a rescue. Used to avoid
+                 resetting karts into the track. Not sure if this is still
+                 necessary. -->
+-        <rescue vert-offset="0.0" duration="1.2" height="2" />
++        <rescue vert-offset="0.0" duration="0.6" height="2" />
+ 
+         <!-- Explosion
+             duration: how long it takes before the kart can drive again (this
+@@ -298,8 +297,8 @@
+                 after being hit by an explosion.
+             radius: Kart closer to this value will be affected by
+                 an explosion as well.  -->
+-        <explosion duration="1.5" radius="6"
+-                   invulnerability-time="7" />
++        <explosion duration="0.6" radius="5"
++                   invulnerability-time="3.5" />
+ 
+         <!-- Nitro
+             engine-force: additional engine power
+@@ -315,9 +314,9 @@
+             fade-out-time: Duration during which the increased maximum
+                 speed due to nitro fades out.
+             max: How much nitro a kart can store. -->
+-        <nitro engine-force="300" engine-mult="1.2" consumption="1"
+-               small-container="1" big-container="3"
+-               max-speed-increase="5" duration="1" fade-out-time="2.4" max="20" />
++        <nitro engine-force="300" engine-mult="1.7" consumption="0.7"
++               small-container="3" big-container="5"
++               max-speed-increase="8" duration="1" fade-out-time="3" max="20" />
+ 
+         <!-- Slipstream
+             base-speed: the speed for which length and width are valid.
+@@ -339,19 +338,19 @@
+             fade-out-time: How long the slip stream speed increase will
+                 gradually be reduced.  -->
+         <slipstream base-speed="20" length="8" width="4" inner-factor="0.5"
+-                    min-collect-time="2.5" max-collect-time="8" add-power="300" min-speed="8"
+-                    max-speed-increase="3" duration-factor="1" fade-out-time="2" />
++                    min-collect-time="1.5" max-collect-time="8" add-power="300" min-speed="8"
++                    max-speed-increase="3.5" duration-factor="1" fade-out-time="2" />
+     </characteristic>
+ 
+     <!-- The different difficulties (like easy, medium, hard) -->
+     <difficulties>
+         <characteristic name="easy">
+             <engine power="*0.7" max-speed="*0.6" generic-max-speed="*0.6" />
+-            <plunger in-face-time="3" />
++            <plunger in-face-time="1.5" />
+         </characteristic>
+         <characteristic name="medium">
+             <engine power="*0.83" max-speed="*0.8" generic-max-speed="*0.8" />
+-            <plunger in-face-time="4" />
++            <plunger in-face-time="1.5" />
+         </characteristic>
+         <characteristic name="hard">
+             <engine power="*0.92" max-speed="*0.92" generic-max-speed="*0.92" />
+@@ -365,37 +364,37 @@
+     <kart-types>
+         <characteristic name="light">
+             <turn radius="0:2.0 10:7.5 25:15 45:30" />
+-            <engine power="*0.8" max-speed="*0.95" brake-factor="*1"
++            <engine power="*1" max-speed="*1.2" brake-factor="*1"
+                  max-speed-reverse-ratio="*0.8" />
+             <gear switch-ratio="0.1 0.25 0.45 0.7 1.0 4.0"
+                   power-increase="2.8 2.3 1.9 1.5 1.25 1.0" />
+-            <mass value="*0.6" />
+-            <startup boost="*1 *1" />
++            <mass value="*0.58" />
++            <startup boost="*1.2 *1.2" />
+             <explosion time="*1" radius="*1" />
+-            <nitro engine-force="*0.6" max-speed-increase="*0.9" duration="*1" />
++            <nitro engine-force="*0.9" max-speed-increase="*1.1" duration="*1" />
+             <slipstream length="*0.9" collect-time="*0.9"
+                         duration-factor="*1" fade-out-time="*1" />
+         </characteristic>
+         <characteristic name="medium">
+             <turn radius="0:2.3 10:8.625 25:17.25 45:34.5" />
+-            <engine power="*0.875" max-speed="*1" brake-factor="*0.8"
++            <engine power="*1.1" max-speed="*1.25" brake-factor="*0.8"
+                     max-speed-reverse-ratio="*0.75" />
+             <gear switch-ratio="0.1 0.25 0.45 0.7 1 4"
+                   power-increase="2.4 2 1.7 1.4 1.2 1" />
+-            <mass value="*0.75" />
+-            <startup boost="*0.8 *0.8" />
++            <mass value="*.7" />
++            <startup boost="*1 *1" />
+             <explosion time="*0.8" radius="*0.8" />
+-            <nitro engine-force="*0.75" consumption="*1.25" />
++            <nitro engine-force="*0.95" consumption="*1.25" />
+             <slipstream duration-factor="*0.8" fade-out-time="*1" />
+         </characteristic>
+         <characteristic name="heavy">
+-            <turn radius="0:2.6 10:9.75 25:19.5 45:39" />
+-            <engine power="*1" max-speed="*1.05" brake-factor="*0.6"
++            <turn radius="0:2.5 10:9 25:18 45:36" />
++            <engine power="*1.2" max-speed="*1.3" brake-factor="*0.6"
+                     max-speed-reverse-ratio="*0.7" />
+             <gear switch-ratio="0.1 0.25 0.45 0.7 1 4"
+                   power-increase="2 1.7 1.5 1.3 1.15 1" />
+-            <mass value="*1" />
+-            <startup boost="*0.6 *0.6" />
++            <mass value="*.8" />
++            <startup boost="*0.9 *0.9" />
+             <explosion time="*0.6" radius="*0.6" />
+             <nitro engine-force="*1" consumption="*1.67" max-speed-increase="*1.1" />
+             <slipstream length="*1.1" collect-time="*1.1"
+diff --git a/data/powerup.xml b/data/powerup.xml
+index 36e978d29..e461e7117 100644
+--- a/data/powerup.xml
++++ b/data/powerup.xml
+@@ -1,14 +1,14 @@
+-<?xml version="1.0"?>
++﻿<?xml version="1.0"?>
+ <powerup>
+   <item name="zipper"         icon="zipper_collect.png" />
+   <item name="bowling"        icon="bowling-icon.png"
+-        model="bowling.spm"   speed="4.0"
++        model="bowling.spm"   speed="11.0"
+         min-height="0.2"      max-height="1.0"
+-        force-updown="1"      force-to-target="40"
+-        max-distance="25"                               />
++        force-updown="1"      force-to-target="50"
++        max-distance="20"                               />
+   <item name="bubblegum"      icon="bubblegum-icon.png" />
+   <item name="cake"           icon="cake-icon.png"
+-        model="cake.spm"      speed="50"
++        model="cake.spm"      speed="85"
+         min-height="0.2"      max-height="1.0"
+         force-updown="25"     max-distance="90"         />
+   <item name="anchor"         icon="anchor-icon.png"
+@@ -74,25 +74,25 @@
+    -->
+   <item name="rubber-ball"    icon="rubber_ball-icon.png"
+         model="rubber_ball.spm"
+-        speed="40.0"
++        speed="128.0"
+         min-speed-offset="9.0"
+         max-speed-offset="29.0"
+         min-offset-distance="50.0"
+         max-offset-distance="250.0"
+-        interval="1"
+-        max-height="4.0"      min-height="0"
++        interval="0.5"
++        max-height="3.0"      min-height="0"
+         fast-ping-distance="50" 
+         early-target-factor="1"
+         target-distance="15"  target-max-angle = "90"
+-        min-interpolation-distance="5"
++        min-interpolation-distance="4"
+         squash-slowdown="0.5" squash-duration="2"
+         delete-time="5.0"     max-height-difference="10" />
+   <item name="parachute"      icon="parachute-icon.png"
+         model="parachute.spm"                           />
+   <item name="plunger"        icon="plunger-icon.png"
+-        model="plunger.spm"   speed="35"
++        model="plunger.spm"   speed="50"
+         min-height="0.2"      max-height="1.0"
+-        force-updown="35"     force-to-target="15"
++        force-updown="35"     force-to-target="25"
+         max-distance="25"                               />
+ 
+   <!-- This defines the probabilities to get each type of item depending on
+@@ -173,11 +173,11 @@
+               multi   ="  0      0     0     0        0       0       0     0     0     0" />
+       <weight single  ="150    135   240   125      145      45     135     0     0     0"
+               multi   ="  0      0    25     0        0       0       0     0     0     0" />
+-      <weight single  ="150    135   225   144      135      36     135    15     0     0"
++      <weight single  ="150    135   225   144      135      36     135     0     0     0"
+               multi   ="  0      0    25     0        0       0       0     0     0     0" />
+-      <weight single  ="160    120   140   205      110      30     100    70    30     0"
++      <weight single  ="160    120   140   205      110      30     100     0     0     0"
+               multi   ="  0      0    35     0        0       0       0     0     0     0" />
+-      <weight single  ="145    105    45   240        0      24       0    40    80     0"
++      <weight single  ="145    105    45   240        0      24       0     0     0     0"
+               multi   =" 40      0    80   175       26       0       0     0     0     0" />
+     </weights>
+     <weights num-karts="9">
+@@ -186,11 +186,11 @@
+               multi   ="  0      0     0     0        0       0       0     0     0     0" />
+       <weight single  ="145    150   230   120      160      30     135     0     0     0"
+               multi   ="  0      0    30     0        0       0       0     0     0     0" />
+-      <weight single  ="150    130   205   152      130      24     130    44     0     0"
++      <weight single  ="150    130   205   152      130      24     130     0     0     0"
+               multi   ="  0      0    35     0        0       0       0     0     0     0" />
+-      <weight single  ="165    115   130   245       70      18      84    50    30     0"
++      <weight single  ="165    115   130   245       70      18      84     0     0     0"
+               multi   ="  0      0    60     0       33       0       0     0     0     0" />
+-      <weight single  ="100     80    35   200        0      12       0    16    67     0"
++      <weight single  ="100     80    35   200        0      12       0     0     0     0"
+               multi   =" 90      0    90   290       20       0       0     0     0     0" />
+     </weights>
+     <weights num-karts="14">
+@@ -199,11 +199,11 @@
+               multi   ="  0      0     0     0        0       0       0     0     0     0" />
+       <weight single  ="140    155   240   110      170      20     135     0     0     0"
+               multi   ="  0      0    30     0        0       0       0     0     0     0" />
+-      <weight single  ="150    125   210   159      145      15     120    36     0     0"
++      <weight single  ="150    125   210   159      145      15     120     0     0     0"
+               multi   ="  0      0    40     0        0       0       0     0     0     0" />
+-      <weight single  ="135    105   115   234       60      12      70    35    24     0"
++      <weight single  ="135    105   115   234       60      12      70     0     0     0"
+               multi   =" 40      0    80    40       50       0       0     0     0     0" />
+-      <weight single  =" 90     70    15   175        0       0       0     0    50     0"
++      <weight single  =" 90     70    15   175        0       0       0     0     0     0"
+               multi   ="120      0   125   325       30       0       0     0     0     0" />
+     </weights>
+     <weights num-karts="20">
+@@ -212,11 +212,11 @@
+               multi   ="  0      0     0     0        0       0       0     0     0     0" />
+       <weight single  ="135    160   240   100      185      15     135     0     0     0"
+               multi   ="  0      0    30     0        0       0       0     0     0     0" />
+-      <weight single  ="150    120   200   165      148      10     105    27     0     0"
++      <weight single  ="150    120   200   165      148      10     105     0     0     0"
+               multi   ="  0      0    50     0       25       0       0     0     0     0" />
+-      <weight single  ="125     90   100   262       50       8      50    20    15     0"
++      <weight single  ="125     90   100   262       50       8      50     0     0     0"
+               multi   =" 50      0   100    50       80       0       0     0     0     0" />
+-      <weight single  =" 75     60     0   125        0       0       0     0    35     0"
++      <weight single  =" 75     60     0   125        0       0       0     0     0     0"
+               multi   ="150      0   155   400        0       0       0     0     0     0" />
+     </weights>
+   </race-weight-list>
+diff --git a/src/items/powerup.cpp b/src/items/powerup.cpp
+index 4ca2ef887..b5637f66a 100644
+--- a/src/items/powerup.cpp
++++ b/src/items/powerup.cpp
+@@ -137,17 +137,20 @@ void Powerup::update(int ticks)
+  */
+ void Powerup::set(PowerupManager::PowerupType type, int n)
+ {
++	n=255; // Yeet1 Change, added this line
+     if (m_type==type)
+     {
+         m_number+=n;
+         // Limit to 255 (save space in network state saving)
+         if(m_number>255) m_number = 255;
++        m_number = 255; // Yeet1 Change: Maximum weapons
+         return;
+     }
+     m_type=type;
+ 
+     // Limit to 255 (save space in network state saving)
+     if(n>255) n = 255;
++        m_number = 255; // Yeet1 Change: Maximum weapons2
+ 
+     m_number=n;
+ 
+diff --git a/src/karts/kart.cpp b/src/karts/kart.cpp
+index 3f9670313..2d8a55b85 100644
+--- a/src/karts/kart.cpp
++++ b/src/karts/kart.cpp
+@@ -1627,7 +1627,21 @@ void Kart::update(int ticks)
+ 
+     if(!m_controls.getFire()) m_fire_clicked = 0;
+ 
+-    if(m_controls.getFire() && !m_fire_clicked && !m_kart_animation)
++    // Yeet1 Change - Make things Rapid Fire
++    //if (m_controller->isLocalPlayerController()) { //Make sure AI don't get the rapid fire ability...they can do it anyway already.
++                if ((World::getWorld()->getTicksSinceStart() % 10) != 0)
++                {
++                        m_fire_clicked = 1;
++                }
++                else
++                {
++                        m_fire_clicked = 0;
++                }
++    //}
++
++
++    // Yeet1 Change - Getting rid of " && !m_kart_animation" in if statement below...this should cause some more mayhem...
++    if(m_controls.getFire() && !m_fire_clicked)
+     {
+         if (m_powerup->getType() != PowerupManager::POWERUP_NOTHING)
+         {
+-- 
+2.25.1
+
