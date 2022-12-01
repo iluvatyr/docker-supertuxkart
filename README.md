@@ -19,7 +19,7 @@ Mounting it, and starting up the server may add more fields depending on the ser
 1) Copy the [docker-compose.yml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/docker-compose-yml) to a location of your choice  on your VPS/PC (e.g. to /path-on-host/stk/docker-compose.yml).
 2) Edit the credentials (STK-username & STK-password) environment variables.
 3) [Download the assets.zip](https://stk.iluvatyr.com/assets-1.4.zip), unpack them ( to e.g. /path-on-host/stk/assets  )
-4) Starting up the supertuxkart-server via `docker-compose up -d`will result in a server with default configuration.
+4) Starting up the supertuxkart-server via `docker-compose up -d` will result in a server with default configuration.
 **To customize your server, more has to be done:**
 5) Enable/Edit the optional environment variables and volume paths as you wish to be able to add addon tracks view logfiles on the host system etc. The options should be self explanatory. But some explanations can be found below.
 6)  After editing, you can get the server up and running by typing `docker-compose up -d` in your terminal. 
@@ -32,12 +32,12 @@ Follow the same procedure as for docker-compose but in the end, start up the con
 **Minimal**
 ```
 docker run --name supertuxkart-server \
+		   -e STK_USERNAME=myusername \
+           -e STK_PASSWORD=mypassword \
            -d \
            -p 2757:2757 \
            -p 2759:2759 \
-		   -v $(pwd)/stk/assets/:/usr/local/share/supertuxkart/data/ 
-           -e STK_USERNAME=myusername \ #only needed for WAN-server
-           -e STK_PASSWORD=mypassword \ #only needed for WAN-server
+           -v $(pwd)/stk/assets/:/usr/local/share/supertuxkart/data/ \
            iluvatyr/supertuxkart:normal-1.4
 ```
 
@@ -56,7 +56,7 @@ docker run --name supertuxkart-server \
       -e STK_SERVER_CONF=server_config.xml \
       -e STK_AI_KARTS=2 \
       -e STK_FIREWALLED=false \
-	  -e STK_INSTALL_ADDONS=false  \
+      -e STK_INSTALL_ADDONS=false \
       -v $(pwd)/stk/assets/:/usr/local/share/supertuxkart/data/ \
       -v $(pwd)/stk/server_config.xml:/stk/server_config.xml \
       -v $(pwd)/stk/motd.txt:/stk/motd.txt \
@@ -65,19 +65,21 @@ docker run --name supertuxkart-server \
       -v $(pwd)/stk/replay/:/home/supertuxkart/.local/share/supertuxkart/replay/ \
       -v $(pwd)/stk/grandprix/:/home/supertuxkart/.local/share/supertuxkart/grandprix/ \
       -v $(pwd)/stk/screenshots:/home/supertuxkart/.local/share/supertuxkart/screenshots/ \
-      -v $(pwd)/stk/logs/stdout.log:/home/supertuxkart/.config/supertuxkart/config-0.10/stdout.log 
+      -v $(pwd)/stk/logs/stdout.log:/home/supertuxkart/.config/supertuxkart/config-0.10/stdout.log \
       -v $(pwd)/stk/logs/server_config.log:/home/supertuxkart/.config/supertuxkart/config-0.10/server_config.log \
            iluvatyr/supertuxkart:normal-1.4
 ```
 
 ### Hosting a server in your local network (LAN)
 
-You can use the same docker run as above without providing the STK_USERNAME and STK_PASSWORD environment variables and set STK_FIREWALLED=true  for only local access.
-It may be necessary to forward **port 2759 and 2757** ( lan server & local discovery) to your LAN-Network if the firewall blocks lan traffic. If you changed the ports, forward them accordingly.
+You can use the same docker run as above
+- **STK_USERNAME** and **STK_PASSWORD** not necessary
+- Set **STK_FIREWALLED=true** 
+- Usually you do not have to change firewallsettings, but depending on your home configuration, it may be necessary to **forward port 2759 and 2757** ( lan server & lan local discovery) to your LAN-Network on the machine running the server and/or Router if the firewall blocks lan traffic. If you changed the ports, forward them accordingly.
 
-### Adding ai karts
+### Adding AI karts (Computer players)
 
-You can add ai karts to your server by setting the environment variable `STK_AI_KARTS=X`, with X being the number of AI-Karts you would like to add.
+You can add AI karts to your server by setting the environment variable `STK_AI_KARTS=X`, with X being the number of AI-Karts you would like to add.
 
 Inside the server_config.xml, you can additionally specify if AI_Karts should be added/removed automatically depending on real players connected to the server with the following variable:
 <!-- If true this server will auto add / remove AI connected with network-ai=x, which will kick N - 1 bot(s) where N is the number of human players. Only use this for non-GP racing server. -->
