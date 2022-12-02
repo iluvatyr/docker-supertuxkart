@@ -12,18 +12,40 @@ Mounting it, and starting up the server may add more fields depending on the ser
 
 1) [Register](https://online.supertuxkart.net/register.php) a free STK account on online.supertuxkart.net if you do not have one already. 
 2) Copy the [server_config.xml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/server_config.xml) to your machine, edit options as you need and make sure `wan-server` is set to `true` within it (by default yes).
-3) If your firewall blocks incoming traffic by default, forward **port 2759**  (or the custom port you configured within the server_config.xml ) to the server in the firewall  (Router, VPS). Otherwise players cannot join.
+3) [Download the assets.zip](https://stk.iluvatyr.com/assets-1.4.zip), unpack them ( to e.g. /path-on-host/stk/assets  ). This can all be done via following command automatically:
+```
+mkdir -p ./stk
+wget https://stk.iluvatyr.com/assets-1.4.zip
+unzip ./assets-1.4.zip -d ./stk/assets
+```
+4) If your firewall blocks incoming traffic by default, forward **port 2759**  (or the custom port you configured within the server_config.xml ) to the server in the firewall  (Router, VPS). Otherwise players cannot join.
 
 ### Starting server using docker-compose
 
 1) Copy the [docker-compose.yml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/docker-compose-yml) to a location of your choice  on your VPS/PC (e.g. to /path-on-host/stk/docker-compose.yml).
 2) Edit the credentials (STK-username & STK-password) environment variables.
-3) [Download the assets.zip](https://stk.iluvatyr.com/assets-1.4.zip), unpack them ( to e.g. /path-on-host/stk/assets  )
+3) Folder-structure now should be following: 
+```
+	./docker-compose.yml
+	./stk/server_config.xml
+	./stk/assets
+```
 4) Starting up the supertuxkart-server via `docker-compose up -d` will result in a server with default configuration.
 **To customize your server, more has to be done:**
 5) Enable/Edit the optional environment variables and volume paths as you wish to be able to add addon tracks view logfiles on the host system etc. The options should be self explanatory. But some explanations can be found below.
-6)  After editing, you can get the server up and running by typing `docker-compose up -d` in your terminal. 
-7) Have a look at the logs by using `docker logs -f stk-container-name`  or the mounted logs. Run your SuperTuxKart Game client and see if your server is running and if you can join (best to check from outside your local network if you are running a server from home)
+6) Folder structure should now be something like this, as an example:
+```
+        ./docker-compose.yml
+        ./stk/server_config.xml
+        ./stk/assets
+	./stk/addons
+	./stk/logs/stdout.log
+	./stk/logs/server_config.log
+	./stk/stkservers.db
+	./stk/motd.txt
+```
+7) After editing the environment variables accordingly, you can get the server up and running by typing `docker-compose up -d` in your terminal. 
+8) Have a look at the logs by using `docker logs -f stk-container-name`  or the mounted logs. Run your SuperTuxKart Game client and see if your server is running and if you can join (best to check from outside your local network if you are running a server from home)
 
 ### Running server using docker-run
 
