@@ -1,7 +1,7 @@
 #!/bin/bash
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
-set -e
-ADDONS_DIR="$HOME/.local/share/supertuxkart/addons/ #(structure is parentfolder/addons/tracks/"
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+ADDONS_DIR="$HOME/.local/share/supertuxkart/addons/"
 TMP_DIR="/tmp/addon_install"
 
 mkdir -p "$TMP_DIR"

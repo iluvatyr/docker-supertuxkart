@@ -43,9 +43,9 @@ ENV CUSERNAME="supertuxkart" \
 LABEL maintainer=iluvatyr
 WORKDIR /stk
 # Install necessary packages
-RUN apt-get update && apt-get install --no-install-recommends -y libcurl4-openssl-dev tzdata dnsutils curl ca-certificates sqlite3 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y libcurl4-openssl-dev tzdata dnsutils curl wget ca-certificates sqlite3 unzip crontab && rm -rf /var/lib/apt/lists/*
 # Copy scripts to workdir
-COPY entrypoint.sh install-all-addons.sh start_stk.sh /stk
+COPY entrypoint.sh update-addons.sh install-all-addons.sh start_stk.sh /stk
 # Copy artifacts from build stage
 COPY --from=build /usr/local/bin/supertuxkart /usr/local/bin
 COPY --from=build /usr/local/share/supertuxkart /usr/local/share/supertuxkart

@@ -17,6 +17,14 @@ stk_install_addons(){
     fi
 }
 
+stk_add_update_cronjob() 
+    #Add support for automated daily updating of all addons after server startup within the container
+    echo -e "${green}Adding cronjob for updating addon tracks daily @4:00am in the Timezone:${TZ}"
+    crontabfile="/stk/crontab.txt"
+    echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" > $crontabfile
+    echo "0 4 * * * /stk/update-addons.sh" >> $crontabfile
+    crontab $crontabfile
+
 stk_login(){
     # Log in with username and password if provided
     if ( supertuxkart --init-user --login=${STK_USERNAME} --password=${STK_PASSWORD} )
@@ -80,6 +88,7 @@ push_url(){
 
 ## Run following startup sequence
 if ( ${STK_INSTALL_ADDONS} ); then stk_install_addons; fi
+if ( ${STK_UPDATE_ADDONS} ); then stk_add_update_cronjob; fi
 if [ -n "${STK_USERNAME}" ] && [ -n "${STK_PASSWORD}" ]
 then stk_login
 else

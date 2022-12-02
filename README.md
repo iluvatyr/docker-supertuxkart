@@ -11,24 +11,16 @@ Mounting it, and starting up the server may add more fields depending on the ser
 ### Hosting a public/online/wan server
 
 1) [Register](https://online.supertuxkart.net/register.php) a free STK account on online.supertuxkart.net if you do not have one already. 
-2) Copy the [server_config.xml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/server_config.xml) to your machine, edit options as you need and make sure `wan-server` is set to `true` within it (by default yes).
-3) [Download the assets.zip](https://stk.iluvatyr.com/assets-1.4.zip), unpack them ( to e.g. /path-on-host/stk/assets  ). This can all be done via following command automatically:
-```
-mkdir -p ./stk
-wget https://stk.iluvatyr.com/assets-1.4.zip
-unzip ./assets-1.4.zip -d ./stk/assets
-```
-4) If your firewall blocks incoming traffic by default, forward **port 2759**  (or the custom port you configured within the server_config.xml ) to the server in the firewall  (Router, VPS). Otherwise players cannot join.
+2) If your firewall blocks incoming traffic by default, forward **port 2759** within the Router or VPS Firewall (or the custom port you configured within the server_config.xml ). Otherwise players cannot join.
 
 ### Starting server using docker-compose
 
-1) Copy the [docker-compose.yml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/docker-compose-yml) to a location of your choice  on your VPS/PC (e.g. to /path-on-host/stk/docker-compose.yml).
-2) Edit the credentials (STK-username & STK-password) environment variables.
-3) Folder-structure now should be following: 
+1) Simply clone this repository via `git clone https://github.com/iluvatyr/docker-supertuxkart.git` or copy the [server_config.xml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/server_config.xml) and the [docker-compose.yml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/docker-compose-yml) to a location of your choice on your VPS/PC.
+2) Edit the credentials (STK-username & STK-password) environment variables within the docker-compose.yml
+3) Folder-structure now should be like following: (you can also change the mounts within the docker-compose.yml and have a different folder structure) 
 ```
 	./docker-compose.yml
 	./stk/server_config.xml
-	./stk/assets
 ```
 4) Starting up the supertuxkart-server via `docker-compose up -d` will result in a server with default configuration.
 **To customize your server, more has to be done:**
@@ -54,7 +46,7 @@ Follow the same procedure as for docker-compose but in the end, start up the con
 **Minimal**
 ```
 docker run --name supertuxkart-server \
-		   -e STK_USERNAME=myusername \
+           -e STK_USERNAME=myusername \
            -e STK_PASSWORD=mypassword \
            -d \
            -p 2757:2757 \
@@ -79,6 +71,7 @@ docker run --name supertuxkart-server \
       -e STK_AI_KARTS=2 \
       -e STK_FIREWALLED=false \
       -e STK_INSTALL_ADDONS=false \
+      -e STK_UPDATE_ADDONS=false \
       -v $(pwd)/stk/assets/:/usr/local/share/supertuxkart/data/ \
       -v $(pwd)/stk/server_config.xml:/stk/server_config.xml \
       -v $(pwd)/stk/motd.txt:/stk/motd.txt \
@@ -112,7 +105,12 @@ I provide a script with this docker-container that takes care of downloading all
 For this to work:
 1) Create a folder .e.g. /path_on/host/stk/addons
 2) Mount the folder as shown above in the docker run command
-3) Add/Change environment variable  STK_INSTALL_ADDONS=true
+3) Add/Change environment variable  **STK_INSTALL_ADDONS=true**
+
+I also provide a script which can automate the updates of addon tracks.
+The script updates tracks by checking for new versions of the addon tracks daily (scheduled at 4:00am in the timezone set via the TZ environment variable.
+If automatically downloads new versions of tracks, if a local version is outdated.
+For this, just set **STK_UPDATE_ADDONS=true**
 
 ### Using a database
 

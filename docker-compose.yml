@@ -28,5 +28,6 @@ services:
       #- STK_AI_KARTS=3 # (default 0)
       #- STK_FIREWALLED=true # (default false)
       #- STK_INSTALL_ADDONS=true # (default false)
+      #- STK_UPDATE_ADDONS=true # (default false)
     ports:
       - "2759:2759/udp"
