@@ -77,19 +77,6 @@ You can use the same docker run as above
 - Set **STK_FIREWALLED=true** 
 - Usually you do not have to change firewallsettings, but depending on your home configuration, it may be necessary to **forward port 2759 and 2757** ( lan server & lan local discovery) to your LAN-Network on the machine running the server and/or Router if the firewall blocks lan traffic. If you changed the ports, forward them accordingly.
 
-### Adding AI karts (Computer players)
-
-You can add AI karts to your server by setting the environment variable `STK_AI_KARTS=X`, with X being the number of AI-Karts you would like to add.
-
-Inside the server_config.xml, you can additionally specify if AI_Karts should be added/removed automatically depending on real players connected to the server with the following variable:
-<!-- If true this server will auto add / remove AI connected with network-ai=x, which will kick N - 1 bot(s) where N is the number of human players. Only use this for non-GP racing server. -->
-`<ai-handling value="true" />`
-
-
-### Mounting log files:
-
-Make sure to create **server_config.log** and **stdout.log** as empty files on the host fs before starting the container. Then add them to the docker run command as shown above so that they can be successfully mounted and written to inside the container.
-
 ### Adding addon tracks
 
 **Manually**
@@ -104,6 +91,26 @@ For this to work:
 1) Create a folder .e.g. /path_on/host/stk/addons
 2) Mount the folder as shown above in the docker run command
 3) Add/Change environment variable  STK_INSTALL_ADDONS=true
+
+### Using a database
+
+Infos on how to 
+- Create a database
+- Configure additional settings within the server_config.xml
+can be found within  [Create Database.md](https://github.com/iluvatyr/docker-supertuxkart/blob/master/Create-Database.md)
+The server can then be started as shown in docker-compose.yml or the docker-run example
+
+### Adding AI karts (Computer players)
+
+You can add AI karts to your server by setting the environment variable `STK_AI_KARTS=X`, with X being the number of AI-Karts you would like to add.
+
+Inside the server_config.xml, you can additionally specify if AI_Karts should be added/removed automatically depending on real players connected to the server with the following variable:
+<!-- If true this server will auto add / remove AI connected with network-ai=x, which will kick N - 1 bot(s) where N is the number of human players. Only use this for non-GP racing server. -->
+`<ai-handling value="true" />`
+
+### Mounting log files:
+
+Make sure to create **server_config.log** and **stdout.log** as empty files on the host fs before starting the container. Then add them to the docker run command as shown above so that they can be successfully mounted and written to inside the container.
 
 ## Some additional infos
 

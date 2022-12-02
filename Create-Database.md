@@ -1,27 +1,35 @@
-Use following commands in following order:
+>## Changes needed within server_config.xml
 
-docker exec -it <supertuxkart container name> bash
-cd /stk
-sqlite3 stkservers.db
-
-1) Copy everything below and paste it inside the database
-2) Type ".quit" to exit the database.
+1) Open a terminal on the host running the supertuxkart-server.
+2) Find your server_config.xml
 3) Enter the server_config.xml and search for sql-management value. Set it to true like below
  ```
     <!-- Use sql database for handling server stats and maintenance, STK needs to be compiled with sqlite3 supported. -->
     <sql-management value="true" />
  ```
-4) Change the table name for records table to "v1_server_config_results" (or something else if you named it differently) so that it looks like below
-   The naming structure of the records table is "v1_servername_results"  (servername = server_config if server_config.xml is your servers config.)
-
-    ```
-    <!-- When non-empty, server is telling whether a player has beaten a server record, records are taken from the table specified in this field. So it can be the results table for this server or for all servers hosted on the machine. -->
-    <records-table-name value="v1_server_config_results" />
-    ```
-5) Search for "store-results" and also set it to true like below
-
+4) To have player records enabled and shown ingame when someone beats a record. change the value **store-results value="true"** for the regarding option within the server_config.xml.
+5) Additionally change the **records-table-name value="v1_server_config_results"**, if your server_config is named server_config.xml. The naming convention is: remove the .xml from the "server_config.xml" and then add a "v1_" in front of it and "_results" after it.  The values for the regarding options should look like below.
+```	
     <!-- When true, stores race results in a separate table for each server. -->
     <store-results value="true" />
+
+    <!-- When non-empty, server is telling whether a player has beaten a server record, records are taken from the table specified in this field. So it can be the results table for this server or for all servers hosted on the machine. -->
+    <records-table-name value="v1_server_config_results" />
+
+```
+## How to create a database file
+
+Use following commands to enter a terminal inside the docker-container for the supertuxkart-server:
+
+```
+docker exec -it <supertuxkart container name> bash
+cd /stk
+sqlite3 stkservers.db
+```
+1) Copy everything below and paste it inside the database
+2) Type ".quit" to exit the database.
+3) There will now be a file called stkservers.db, that you should copy to the folder in which is also the docker-compose.yml or the other files (addon folder, server_config.xml etc.)
+4) Add the bind mount as shown in the docker-run command or docker-compose.yml and start up the container. The logs should show that it now uses a database. 
 
 ## Copy this and paste after the sqlite3 stkservers.db command
 
@@ -164,3 +172,4 @@ UNION SELECT 'NAME2' AS server_name, time, username, venue, reverse, mode, laps,
     UNION SELECT 'Server3' AS server_name, connected_time, online_id, username, ip, ((ip >> 24) & 255) ||'.'|| ((ip >> 16) & 255) ||'.'|| ((ip >>  8) & 255) ||'.'|| ((ip ) & 255) AS ip_readable, country_code, os FROM v1_server3_config_stats
 ) ORDER BY ip DESC;
  ```
+
