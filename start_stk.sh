@@ -17,13 +17,14 @@ stk_install_addons(){
     fi
 }
 
-stk_add_update_cronjob() 
+stk_add_update_cronjob() {
     #Add support for automated daily updating of all addons after server startup within the container
     echo -e "${green}Adding cronjob for updating addon tracks daily @4:00am in the Timezone:${TZ}"
     crontabfile="/stk/crontab.txt"
     echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" > $crontabfile
     echo "0 4 * * * /stk/update-addons.sh" >> $crontabfile
     crontab $crontabfile
+}
 
 stk_login(){
     # Log in with username and password if provided

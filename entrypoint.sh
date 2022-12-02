@@ -39,13 +39,13 @@ change_userid(){
 }
 
 revert_userid(){
-    echo_green 'Reverting ownership of stk-files back to default PUID, PGID: 1337'
+    echo_green 'Setting ownership to default PUID, PGID: 1337'
     chown -R "${CUSERNAME}:${CGROUPNAME}" /stk /usr/local/bin /usr/local/share/supertuxkart "/home/${CUSERNAME}"
 }
 
 install_assets(){
-    echo -e "{green}No assets found, this is either the first startup of the server, or you forgot to mount them / mounted them incorrectly\nInstalling assets in 10 seconds\nStop container to abort..${reset}"
-    sleep 10
+    echo -e "${green}No assets found, this is either the first startup of the server, you forgot to mount them, or you mounted them incorrectly (check the paths)\nInstalling of assets begins in a few seconds\nStop container to abort installation of assets. This action runs only once. If the bind-mount is set up correct, it will not be needed anymore afterwards${reset}"
+    sleep 20
     wget -O /stk/assets.zip https://github.com/supertuxkart/stk-assets-mobile/releases/download/git/stk-assets.zip
     unzip /stk/assets.zip -d /usr/local/share/supertuxkart/data/
     rm /stk/assets.zip

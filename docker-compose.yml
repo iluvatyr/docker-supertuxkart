@@ -4,12 +4,12 @@ services:
     image: iluvatyr/supertuxkart:normal-1.4
     container_name: supertuxkart-server
     restart: unless-stopped
-    volumes:
-      - ./stk/assets/:/usr/local/share/supertuxkart/data/ # needed STK ASSETS
-      #- ./stk/server_config.xml:/stk/server_config.xml # needed to customize your server
+    #volumes:
+      #- ./stk/assets/:/usr/local/share/supertuxkart/data/ # needed to make STK ASSETS persistent on disk
+      #- ./stk/server_config.xml:/stk/server_config.xml # needed to customize your server beyond the environment variable options
       #- ./stk/motd.txt:/stk/motd.txt # optional, but recommended message of the day
-      #- ./stk/addons/:/home/supertuxkart/.local/share/supertuxkart/addons/ # optional but recommended addon tracks
-      #- ./stk/stkservers.db:/stk/stkservers.db # optional but recommended, has to be added in server_config.xml
+      #- ./stk/addons/:/home/supertuxkart/.local/share/supertuxkart/addons/ # needed to make the addon tracks downloaded (3GB) persistent on disk. Should be enabled if addons are downlaoded
+      #- ./stk/stkservers.db:/stk/stkservers.db # optional but recommended, Check README.md and Create-Database.md before enabling this
       #- ./stk/replay/:/home/supertuxkart/.local/share/supertuxkart/replay/ #optional
       #- ./stk/grandprix/:/home/supertuxkart/.local/share/supertuxkart/grandprix/ #optional
       #- ./stk/screenshots:/home/supertuxkart/.local/share/supertuxkart/screenshots/ #optional

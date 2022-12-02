@@ -15,32 +15,28 @@ Mounting it, and starting up the server may add more fields depending on the ser
 
 ### Starting server using docker-compose
 
-1) Simply clone this repository via `git clone https://github.com/iluvatyr/docker-supertuxkart.git` or copy the [server_config.xml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/server_config.xml) and the [docker-compose.yml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/docker-compose-yml) to a location of your choice on your VPS/PC.
+1) Simply clone this repository via `git clone https://github.com/iluvatyr/docker-supertuxkart.git` or download the [docker-compose.yml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/docker-compose-yml) to a location of your choice on your VPS/PC.
 2) Edit the credentials (STK-username & STK-password) environment variables within the docker-compose.yml
-3) Folder-structure now should be like following: (you can also change the mounts within the docker-compose.yml and have a different folder structure) 
-```
-	./docker-compose.yml
-	./stk/server_config.xml
-```
-4) Starting up the supertuxkart-server via `docker-compose up -d` will result in a server with default configuration.
+3) Starting up the supertuxkart-server via `docker-compose up -d` will start a SuperTuxKart-Server with default configuration from server_config.xml shown in this repository.
 **To customize your server, more has to be done:**
-5) Enable/Edit the optional environment variables and volume paths as you wish to be able to add addon tracks view logfiles on the host system etc. The options should be self explanatory. But some explanations can be found below.
-6) Folder structure should now be something like this, as an example:
+4) Download the [server_config.xml](https://github.com/iluvatyr/docker-supertuxkart/blob/master/server_config.xml) and uncomment the bindmount for it in the docker-compose.yml, if you wish to edit configuration options that cannot be changed with environmental variables (e.g. some database options)
+5) Enable/Edit the optional environment variables and volume paths as you wish to the addon tracks, assets to be persistent through restarts, view logfiles on the host system etc or have a database. The options should be self explanatory. But some explanations can be found below. Read through them, to make sure you understood what needs to be done.
+6) Folder structure should now be something like this, as an example with database, logs,addons,assets,and motd.txt are mounted on the host and persist, even if the container is removed (which is how it should be in this case, since you dont want to download addons+ assets everytime the container is started up):
 ```
-        ./docker-compose.yml
-        ./stk/server_config.xml
-        ./stk/assets
-	./stk/addons
-	./stk/logs/stdout.log
-	./stk/logs/server_config.log
-	./stk/stkservers.db
-	./stk/motd.txt
+    ./docker-compose.yml
+    ./stk/server_config.xml
+    ./stk/assets
+    ./stk/addons
+    ./stk/logs/stdout.log
+    ./stk/logs/server_config.log
+    ./stk/stkservers.db
+    ./stk/motd.txt
 ```
-7) After editing the environment variables accordingly, you can get the server up and running by typing `docker-compose up -d` in your terminal. 
-8) Have a look at the logs by using `docker logs -f stk-container-name`  or the mounted logs. Run your SuperTuxKart Game client and see if your server is running and if you can join (best to check from outside your local network if you are running a server from home)
+Of course, you can also change the mounts within the docker-compose.yml and have a different folder structure)
+7) After editing the environment variables as you wish, you can just like before get the server up and running by typing `docker-compose up -d` in your terminal. 
+8) You can look at the logs by using `docker logs -f supertuxkart-server` or by viewing the mounted logfiles. Tom make sure, everything is running as it should, you can run your SuperTuxKart Game client and see if you can find, connect, and play on your newly created server (best to check from outside your local network if you are running a server from home)
 
 ### Running server using docker-run
-
 Follow the same procedure as for docker-compose but in the end, start up the container with following command. `$(pwd)` just points to the location that you are currently in and should be changed to where your files reside or you only run the server by first running `cd /path-on-host/stk`
 
 **Minimal**
@@ -51,7 +47,6 @@ docker run --name supertuxkart-server \
            -d \
            -p 2757:2757 \
            -p 2759:2759 \
-           -v $(pwd)/stk/assets/:/usr/local/share/supertuxkart/data/ \
            iluvatyr/supertuxkart:normal-1.4
 ```
 
@@ -90,7 +85,7 @@ docker run --name supertuxkart-server \
 You can use the same docker run as above
 - **STK_USERNAME** and **STK_PASSWORD** not necessary
 - Set **STK_FIREWALLED=true** 
-- Usually you do not have to change firewallsettings, but depending on your home configuration, it may be necessary to **forward port 2759 and 2757** ( lan server & lan local discovery) to your LAN-Network on the machine running the server and/or Router if the firewall blocks lan traffic. If you changed the ports, forward them accordingly.
+- Usually you do not have to change firewallsettings within a local network, but if you cannot join a local server in your home network, besides everything configured correctly, it may be necessary to **forward port 2759 and 2757** ( lan server & lan local discovery) to your LAN-Network on the machine running the server and/or Router if the firewall blocks lan traffic. If you changed the ports, forward them accordingly.
 
 ### Adding addon tracks
 
@@ -130,19 +125,31 @@ Inside the server_config.xml, you can additionally specify if AI_Karts should be
 
 ### Mounting log files:
 
-Make sure to create **server_config.log** and **stdout.log** as empty files on the host fs before starting the container. Then add them to the docker run command as shown above so that they can be successfully mounted and written to inside the container.
+Make sure to create **server_config.log** and **stdout.log** as empty files on the host fs before starting the container. Then use them as shown in the `docker run` example above so that they can be successfully mounted and written to inside the container. You can then check the logfiles on the host server via those files.
 
 ## Some additional infos
 
 ### Differences to jwestp image:
+This docker-container for SuperTuxKart is fairly advanced and makes it very easy to host a server and configure it to your will.
 This docker image uses a modified version of stk-code from [kimden/stk-code](https://github.com/kimden/stk-code) instead of [supertuxkart/stk-code](https://github.com/supertuxkart/stk-code.git) for building the image. This adds a few more functionalities and is fully compatible with the standard stk-code. 
 
-A list of the [changes in kimden/stk-code](https://github.com/kimden/stk-code/blob/master/FORK_CHANGES.md) can be viewed by clicking the link. A lot Supertuxkart-servers run with this server version. 
-This fork of jwestp/docker-supertuxkart has following changes:
+A list of the [changes in kimden/stk-code](https://github.com/kimden/stk-code/blob/master/FORK_CHANGES.md) can be viewed by clicking the link. A lot Supertuxkart-servers run with his stk-code additions. 
 
+### Functions of this Supertuxkart-Server-Docker-Image
+- Easy to understand README.md
+- The whole supertuxkart-server-process is running as nonroot.
+- PGID and PUID of the supertuxkart user can be custom set.
 - Support for sqlite3 database server management ( HowTo: [Create-Database.md](https://github.com/iluvatyr/docker-supertuxkart/blob/master/Create-Database.md) )
-- Support to configure the server easily through environment variables in docker run or docker-compose.
-- Using kimdens modified stk-code for additional functions, such as having server records stored in database and many more. See more differences in the above mentioned changes in kimden/stk-code
+- Support to configure the server easily through environment variables in docker run or docker-compose. e.g.
+    - Automated Addon installation
+    - Automated Addon updates via daily cronjob
+    - Add AI via environment variable
+    - Let supertuxkart-server push to a custom URL to notify that it is running
+    - Configure some server_config.xml values through environment variables (PORT,FIREWALLED)
+### To be added
+- Automated server restarts after updates
+- Automated checking if server is online via online.supertuxkart.net api that lists servers and restarting it.
+- Let all options in the server_config.xml be changed by environment variables.
 
 ### What is SuperTuxKart?
 
