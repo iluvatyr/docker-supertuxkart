@@ -62,6 +62,7 @@ if [ ! -e /usr/local/share/supertuxkart/data/tracks ]; then
     install_assets
 fi
 
+echo -e "${green} Starting supertuxkart-server process${reset}"
 if [ -n "${PUID}" ] && [ -n "${PGID}" ]
 then
     change_userid
