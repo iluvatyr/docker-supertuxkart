@@ -23,7 +23,7 @@ RUN apt-get update && \
         libsqlite3-0 \
         dpkg
 # Get code and assets
-RUN git clone --branch yeet1 --depth=1 https://github.com/iluvatyr/stk-code.git
+RUN git clone --branch command-manager-prototype --depth=1 https://github.com/iluvatyr/stk-code.git
 # Build server
 RUN mkdir stk-code/cmake_build && \
     cd stk-code/cmake_build && \

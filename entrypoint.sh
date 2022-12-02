@@ -44,9 +44,9 @@ revert_userid(){
 }
 
 install_assets(){
-    echo -e "{green}No assets found, this is either the first startup of the server, or you forgot to mount them / mounted them incorrectly\Installing assets in 10 seconds${reset}"
+    echo -e "{green}No assets found, this is either the first startup of the server, or you forgot to mount them / mounted them incorrectly\nInstalling assets in 10 seconds\nStop container to abort..${reset}"
     sleep 10
-    wget -O /stk/assets.zip https://github.com/supertuxkart/stk-assets-mobile/releases/download/git/stk-assets-full.zip
+    wget -O /stk/assets.zip https://github.com/supertuxkart/stk-assets-mobile/releases/download/git/stk-assets.zip
     unzip /stk/assets.zip -d /usr/local/share/supertuxkart/data/
     rm /stk/assets.zip
 }
