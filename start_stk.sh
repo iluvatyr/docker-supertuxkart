@@ -38,7 +38,7 @@ stk_login(){
 }
 
 stk_change_server_config(){
-    # Change Port in STK_SERVER_CONF if necessary
+    # Change stk port
     if [ -z "$(cat "/stk/${STK_SERVER_CONF}" | grep -e "server-port value\=\"[0-9]*\"" | grep ${STK_PORT})" ]
     then
         echo_green "Changing port to ${STK_PORT}"
@@ -52,6 +52,14 @@ stk_change_server_config(){
         echo_green "Changing Firewall status to ${STK_FIREWALLED}"
         cp "/stk/${STK_SERVER_CONF}" "/stk/tmp.xml"
         sed -i "s/firewalled-server value\=\".*\"/firewalled-server value\=\"${STK_FIREWALLED}\"/" "/stk/tmp.xml"
+        cp "/stk/tmp.xml" "/stk/${STK_SERVER_CONF}" && rm "/stk/tmp.xml"
+    fi
+    # Change server name
+    if [ -n "${STK_SERVER_NAME}" ]
+    then
+        echo "Changing ServerName to \"${STK_SERVER_NAME}\""
+        cp "/stk/${STK_SERVER_CONF}" "/stk/tmp.xml"
+        sed -i "s/server-name value\=\".*\"/server-name value\=\"${STK_SERVER_NAME}\"/" "/stk/tmp.xml"
         cp "/stk/tmp.xml" "/stk/${STK_SERVER_CONF}" && rm "/stk/tmp.xml"
     fi
 }

@@ -61,6 +61,7 @@ docker run --name supertuxkart-server \
       -e UPTIME_PUSH_PERIOD=300 \
       -e STK_USERNAME=your-stk-username \
       -e STK_PASSWORD=your_password \
+      -e STK_SERVER_NAME="My Awesome Server" \
       -e STK_PORT=2762 \
       -e STK_SERVER_CONF=server_config.xml \
       -e STK_AI_KARTS=2 \

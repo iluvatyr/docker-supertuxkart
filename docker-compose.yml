@@ -23,6 +23,7 @@ services:
       #- UPTIME_PUSH_PERIOD=300 # (default 60)
       - STK_USERNAME=your-stk-username # (needed:default unset, register on https://online.supertuxkart.net )
       - STK_PASSWORD=your_password # (needed:default unset)
+      #- STK_SERVER_NAME="LazyName's Server" # (default My Awesome Server)
       #- STK_PORT=2762 # (default 2759, match this with port set and firewallsetting)
       #- STK_SERVER_CONF=my_server_config.xml # (default server_config.xml --> referring on how mounted inside container)
       #- STK_AI_KARTS=3 # (default 0)

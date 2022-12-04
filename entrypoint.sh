@@ -24,6 +24,7 @@ export STK_INSTALL_ADDONS="${STK_INSTALL_ADDONS:-"false"}"
 export STK_UPDATE_ADDONS="${STK_UPDATE_ADDONS:-"false"}"
 export STK_AI_KARTS="${STK_AI_KARTS:-0}"
 export STK_FIREWALLED="${STK_FIREWALLED:-"false"}"
+export STK_SERVER_NAME="${STK_SERVER_NAME:-}"
 #PGID, PUID
 
 change_userid(){
